@@ -1,6 +1,7 @@
 import { createTRPCRouter } from "~/server/api/trpc";
 import { formRouter } from "./routers/formRouter";
 import { fieldRouter } from "./routers/fieldRouter";
+import { optionsRouter } from "./routers/optionsRouter";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +11,7 @@ import { fieldRouter } from "./routers/fieldRouter";
 export const appRouter = createTRPCRouter({
   form: formRouter,
   field: fieldRouter,
+  option: optionsRouter,
 });
 
 // export type definition of API

@@ -1,25 +1,56 @@
-import { useForm, useFieldArray, FieldValues } from "react-hook-form";
+import {
+  useForm,
+  useFieldArray,
+  FieldValues,
+  UseFormReset,
+} from "react-hook-form";
 
 import Button from "./common/Button";
+import { api } from "~/utils/api";
+import { toast } from "react-hot-toast";
 
-export default function CreateOption({ fieldId }: { fieldId: string }) {
+export default function CreateOption({
+  fieldId,
+  fieldFormReset,
+}: {
+  fieldId: string;
+  fieldFormReset: UseFormReset<FieldValues>;
+}) {
   const {
     register,
-    reset: formReset,
+    reset: optionFormReset,
     handleSubmit,
     formState: { errors },
     control,
   } = useForm();
 
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
-    {
+  const { fields, append /*, prepend, remove, swap, move, insert*/ } =
+    useFieldArray({
       control,
       name: "option",
-    }
-  );
+    });
+
+  const createOptionMutation = api.option.createOption.useMutation({
+    onSuccess: () => {
+      toast.success("options saved");
+      optionFormReset();
+      fieldFormReset();
+    },
+  });
+
+  type Option = {
+    value: string;
+  };
+  type MutationData = {
+    fieldId: string;
+    options: Array<Option>;
+  };
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
+    createOptionMutation.mutate({
+      fieldId,
+      options: data.option,
+    } as MutationData);
   };
 
   return (
@@ -27,7 +58,7 @@ export default function CreateOption({ fieldId }: { fieldId: string }) {
       <p>create option</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
-          <>
+          <div key={field.id}>
             <label className="block text-sm font-medium leading-6 text-gray-900">
               {`option ${index + 1}`}
             </label>
@@ -38,7 +69,7 @@ export default function CreateOption({ fieldId }: { fieldId: string }) {
                 {...register(`option.${index}.value`)}
               />
             </div>
-          </>
+          </div>
         ))}
         <Button type="button" onClick={() => void append({})}>
           +

@@ -22,7 +22,7 @@ export default function CreateField({ formId }: { formId: string }) {
     onSuccess: (data) => {
       toast.success("created field");
       setFieldId(data.id);
-      if (data.type !== "select") formReset();
+      if (data.type !== "select") fieldFormReset();
     },
     onError: () => {
       toast.error("error creating field");
@@ -37,7 +37,7 @@ export default function CreateField({ formId }: { formId: string }) {
 
   const {
     register,
-    reset: formReset,
+    reset: fieldFormReset,
     handleSubmit,
     formState: { errors },
     getValues,
@@ -120,7 +120,7 @@ export default function CreateField({ formId }: { formId: string }) {
       <br />
       <Divider />
       {getValues("fieldType") === "select" && (
-        <CreateOption fieldId={fieldId} />
+        <CreateOption fieldId={fieldId} fieldFormReset={fieldFormReset} />
       )}
     </>
   );

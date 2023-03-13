@@ -7,6 +7,8 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import CreateField from "./CreateField";
 import Divider from "./common/Divider";
+import Button from "./common/Button";
+import { signOut } from "next-auth/react";
 
 const formSchema = z.object({ formName: z.string().min(5) });
 
@@ -41,6 +43,7 @@ export default function CreatePoll() {
 
   return (
     <>
+      <Button onClick={() => void signOut()}>sign out</Button>
       <p>currently working on: {formId}</p>
       <p>create form</p>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -69,7 +72,7 @@ export default function CreatePoll() {
       </form>
       <br />
       <Divider />
-      <CreateField formId={formId} />
+      {formId !== "" && <CreateField formId={formId} />}
     </>
   );
 }
