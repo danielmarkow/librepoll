@@ -1,4 +1,6 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, FieldValues } from "react-hook-form";
+
+import Button from "./common/Button";
 
 export default function CreateOption({ fieldId }: { fieldId: string }) {
   const {
@@ -11,27 +13,37 @@ export default function CreateOption({ fieldId }: { fieldId: string }) {
 
   const { fields, append, prepend, remove, swap, move, insert } = useFieldArray(
     {
-      control, // control props comes from useForm (optional: if you are using FormContext)
-      name: "options", // unique name for your Field Array
+      control,
+      name: "option",
     }
   );
+
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+  };
 
   return (
     <>
       <p>create option</p>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
-          <input
-            key={field.id} // important to include key with field's id
-            {...register(`test.${index}.value`)}
-          />
+          <>
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              {`option ${index + 1}`}
+            </label>
+            <div>
+              <input
+                key={field.id} // important to include key with field's id
+                className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                {...register(`option.${index}.value`)}
+              />
+            </div>
+          </>
         ))}
-        <button
-          type="submit"
-          className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        >
-          Create Option
-        </button>
+        <Button type="button" onClick={() => void append({})}>
+          +
+        </Button>
+        <Button type="submit">Create Options</Button>
       </form>
     </>
   );

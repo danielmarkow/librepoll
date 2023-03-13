@@ -7,6 +7,7 @@ import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 
 import CreateOption from "./CreateOption";
+import Divider from "./common/Divider";
 
 const fieldSchema = z.object({
   fieldName: z.string(),
@@ -21,7 +22,7 @@ export default function CreateField({ formId }: { formId: string }) {
     onSuccess: (data) => {
       toast.success("created field");
       setFieldId(data.id);
-      formReset();
+      if (data.type !== "select") formReset();
     },
     onError: () => {
       toast.error("error creating field");
@@ -39,7 +40,7 @@ export default function CreateField({ formId }: { formId: string }) {
     reset: formReset,
     handleSubmit,
     formState: { errors },
-    watch,
+    getValues,
   } = useForm<FormValues>({
     resolver: zodResolver(fieldSchema),
   });
@@ -109,9 +110,6 @@ export default function CreateField({ formId }: { formId: string }) {
             <option value="select">select</option>
           </select>
         </div>
-
-        {watch("fieldType") === "select" && <CreateOption fieldId={fieldId} />}
-
         <button
           type="submit"
           className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
@@ -119,6 +117,11 @@ export default function CreateField({ formId }: { formId: string }) {
           Create Field
         </button>
       </form>
+      <br />
+      <Divider />
+      {getValues("fieldType") === "select" && (
+        <CreateOption fieldId={fieldId} />
+      )}
     </>
   );
 }
