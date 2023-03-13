@@ -9,12 +9,18 @@ import Button from "./common/Button";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 
+type FormValuesField = {
+  fieldName: string;
+  fieldType: "text" | "number" | "radio" | "select";
+  fieldRequired: "no" | "yes";
+};
+
 export default function CreateOption({
   fieldId,
   fieldFormReset,
 }: {
   fieldId: string;
-  fieldFormReset: UseFormReset<FieldValues>;
+  fieldFormReset: UseFormReset<FormValuesField>;
 }) {
   const {
     register,
