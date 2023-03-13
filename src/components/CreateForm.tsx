@@ -9,17 +9,22 @@ import CreateField from "./CreateField";
 import Divider from "./common/Divider";
 import Button from "./common/Button";
 import { signOut } from "next-auth/react";
+import formHook from "~/hooks/formHook";
 
 const formSchema = z.object({ formName: z.string().min(5) });
 
 export default function CreateForm() {
-  const [formId, setFormId] = useState<string>("");
+  // const [formId, setFormId] = useState<string>("");
+
+  // TODO figure out a way so that typescript does not want the "!"
+  const { currentFormId, setCurrentFormId } = formHook()!;
 
   const createFormMutation = api.form.createForm.useMutation({
     onSuccess: (data) => {
       toast.success("form created");
       resetForm();
-      setFormId(data.id);
+      // setFormId(data.id);
+      setCurrentFormId(data.id);
     },
   });
 
@@ -44,7 +49,7 @@ export default function CreateForm() {
   return (
     <>
       <Button onClick={() => void signOut()}>sign out</Button>
-      <p>currently working on: {formId}</p>
+      <p>currently working on: {currentFormId}</p>
       <p>create form</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -72,7 +77,7 @@ export default function CreateForm() {
       </form>
       <br />
       <Divider />
-      {formId !== "" && <CreateField formId={formId} />}
+      {currentFormId !== "" && <CreateField formId={currentFormId} />}
     </>
   );
 }

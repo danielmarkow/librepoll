@@ -1,8 +1,10 @@
 import { Dispatch, SetStateAction, createContext } from "react";
 
-const FormContext = createContext<{
+type ContextType = {
   currentFormId: string;
   setCurrentFormId: Dispatch<SetStateAction<string>>;
-} | null>(null);
+} | null;
+
+const FormContext = createContext<ContextType>(null);
 
 export { FormContext };
