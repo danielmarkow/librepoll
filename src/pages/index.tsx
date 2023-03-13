@@ -1,8 +1,7 @@
 import { type NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
-import CreatePoll from "~/components/CreatePoll";
-
-import { api } from "~/utils/api";
+import { signIn, useSession } from "next-auth/react";
+import CreateForm from "~/components/CreateForm";
+import PreRenderForm from "~/components/PreRenderForm";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -10,7 +9,14 @@ const Home: NextPage = () => {
     <>
       <main>
         {sessionData ? (
-          <CreatePoll />
+          <div className="grid grid-cols-2 gap-1">
+            <div className="h-screen border border-dashed border-gray-500">
+              <CreateForm />
+            </div>
+            <div className="h-screen border border-dashed border-gray-500">
+              <PreRenderForm />
+            </div>
+          </div>
         ) : (
           <button
             onClick={() => void signIn()}

@@ -17,4 +17,12 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
+  getForm: protectedProcedure
+    .input(z.object({ formId: z.string().cuid() }))
+    .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.form.findMany({
+        where: { AND: [{ id: input.formId }, { userId }] },
+      });
+    }),
 });

@@ -12,7 +12,7 @@ import { signOut } from "next-auth/react";
 
 const formSchema = z.object({ formName: z.string().min(5) });
 
-export default function CreatePoll() {
+export default function CreateForm() {
   const [formId, setFormId] = useState<string>("");
 
   const createFormMutation = api.form.createForm.useMutation({
