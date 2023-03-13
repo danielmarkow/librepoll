@@ -23,6 +23,7 @@ export const formRouter = createTRPCRouter({
       const userId = ctx.session?.user?.id;
       return ctx.prisma.form.findMany({
         where: { AND: [{ id: input.formId }, { userId }] },
+        include: { fields: { include: { options: true } } },
       });
     }),
 });
