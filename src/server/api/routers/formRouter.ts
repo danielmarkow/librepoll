@@ -21,7 +21,7 @@ export const formRouter = createTRPCRouter({
     .input(z.object({ formId: z.string().cuid() }))
     .query(({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-      return ctx.prisma.form.findMany({
+      return ctx.prisma.form.findFirst({
         where: { AND: [{ id: input.formId }, { userId }] },
         include: { fields: { include: { options: true } } },
       });

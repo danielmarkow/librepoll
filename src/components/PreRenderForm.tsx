@@ -1,10 +1,12 @@
 import formHook from "~/hooks/formHook";
 import { api } from "~/utils/api";
 
+import PreRenderField from "./PreRenderField";
+
 export default function PreRenderForm() {
   const { currentFormId, setCurrentFormId } = formHook()!;
 
-  const getFormQuery = api.form.getForm.useQuery(
+  const { data, isSuccess } = api.form.getForm.useQuery(
     { formId: currentFormId },
     {
       enabled: currentFormId !== null,
@@ -15,7 +17,15 @@ export default function PreRenderForm() {
     <>
       <p>form previews</p>
       <p>currently working on: {currentFormId}</p>
-      {getFormQuery.isSuccess && JSON.stringify(getFormQuery.data)}
+      {isSuccess && (
+        <>
+          <h1 className="text-xl">{data!.name}</h1>
+          {data?.fields.map((field) => (
+            <PreRenderField field={field} />
+          ))}
+        </>
+      )}
+      {isSuccess && JSON.stringify(data)}
     </>
   );
 }
