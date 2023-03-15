@@ -26,4 +26,35 @@ export const fieldRouter = createTRPCRouter({
         },
       });
     }),
+  // to create radios
+  createMultipleFields: protectedProcedure
+    .input(
+      z.array(
+        z.object({
+          formId: z.string().cuid(),
+          fieldName: z.string(),
+          fieldLabel: z.string(),
+          fieldType: z.string(),
+          fieldRequired: z.string(),
+        })
+      )
+    )
+    .mutation(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+
+      const fieldsToCreate = input.map((inp) =>
+        ctx.prisma.field.create({
+          data: {
+            form: { connect: { id: inp.formId } },
+            user: { connect: { id: userId } },
+            name: inp.fieldName,
+            label: inp.fieldLabel,
+            type: inp.fieldType,
+            required: inp.fieldRequired === "yes" ? true : false,
+          },
+        })
+      );
+
+      return ctx.prisma.$transaction(fieldsToCreate);
+    }),
 });
