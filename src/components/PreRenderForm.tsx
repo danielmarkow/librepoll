@@ -9,7 +9,7 @@ export default function PreRenderForm() {
   const { data, isSuccess } = api.form.getForm.useQuery(
     { formId: currentFormId },
     {
-      enabled: currentFormId !== null,
+      enabled: currentFormId !== null && currentFormId !== "",
     }
   );
 

@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 
 type FormValuesField = {
   fieldName: string;
+  fieldLabel: string;
   fieldType: "text" | "number" | "radio" | "select";
   fieldRequired: "no" | "yes";
 };

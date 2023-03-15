@@ -29,6 +29,7 @@ model Form {
 model Field {
     id       String   @id @default(cuid())
     name     String
+    label    String
     type     String
     required Boolean  @default(false)
     form     Form     @relation(fields: [formId], references: [id])
