@@ -1,8 +1,7 @@
 import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
-import CreateForm from "~/components/CreateForm";
-import PreRenderForm from "~/components/PreRenderForm";
-import FormProvider from "~/context/FormProvider";
+
+import FormSelector from "~/components/FormSelector";
 
 const Home: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -10,16 +9,9 @@ const Home: NextPage = () => {
     <>
       <main>
         {sessionData ? (
-          <div className="grid grid-cols-2 gap-1">
-            <FormProvider>
-              <div className="h-screen border border-dashed border-gray-500">
-                <CreateForm />
-              </div>
-              <div className="h-screen border border-dashed border-gray-500">
-                <PreRenderForm />
-              </div>
-            </FormProvider>
-          </div>
+          <>
+            <FormSelector />
+          </>
         ) : (
           <button
             onClick={() => void signIn()}

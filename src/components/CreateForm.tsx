@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
-import { useState } from "react";
 import CreateField from "./CreateField";
 import Divider from "./common/Divider";
 import Button from "./common/Button";
@@ -14,8 +13,6 @@ import formHook from "~/hooks/formHook";
 const formSchema = z.object({ formName: z.string().min(5) });
 
 export default function CreateForm() {
-  // const [formId, setFormId] = useState<string>("");
-
   // TODO figure out a way so that typescript does not want the "!"
   const { currentFormId, setCurrentFormId } = formHook()!;
 
@@ -23,7 +20,6 @@ export default function CreateForm() {
     onSuccess: (data) => {
       toast.success("form created");
       resetForm();
-      // setFormId(data.id);
       setCurrentFormId(data.id);
     },
   });

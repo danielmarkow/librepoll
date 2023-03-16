@@ -26,4 +26,10 @@ export const formRouter = createTRPCRouter({
         include: { fields: { include: { options: true } } },
       });
     }),
+  getAllForms: protectedProcedure.query(({ ctx }) => {
+    const userId = ctx.session?.user?.id;
+    return ctx.prisma.form.findMany({
+      where: { userId },
+    });
+  }),
 });

@@ -20,11 +20,18 @@ const fieldSchema = z.object({
 export default function CreateField({ formId }: { formId: string }) {
   const [fieldId, setFieldId] = useState<string>("");
 
+  const client = api.useContext();
+
   const createFieldMutation = api.field.createField.useMutation({
     onSuccess: (data) => {
       toast.success("created field");
-      setFieldId(data.id);
-      if (data.type !== "select") fieldFormReset();
+      if (data.type === "select") {
+        setFieldId(data.id);
+      }
+      if (data.type !== "select") {
+        fieldFormReset();
+        client.form.getForm.invalidate();
+      }
     },
     onError: () => {
       toast.error("error creating field");
@@ -126,17 +133,19 @@ export default function CreateField({ formId }: { formId: string }) {
                 <option value="yes">yes</option>
               </select>
             </div>
-            <button
-              type="submit"
-              className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-            >
-              Create Field
-            </button>
           </>
+        )}
+        {watch("fieldType") !== "radio" && (
+          <button
+            type="submit"
+            className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            Create Field
+          </button>
         )}
       </form>
       <br />
-      <Divider />
+      {watch("fieldType") !== "radio" && <Divider />}
       {watch("fieldType") === "radio" && (
         <CreateRadio
           formId={formId}
@@ -144,8 +153,12 @@ export default function CreateField({ formId }: { formId: string }) {
           fieldName={watch("fieldName")}
         />
       )}
-      {getValues("fieldType") === "select" && (
-        <CreateOption fieldId={fieldId} fieldFormReset={fieldFormReset} />
+      {getValues("fieldType") === "select" && fieldId !== "" && (
+        <CreateOption
+          fieldId={fieldId}
+          setFieldId={setFieldId}
+          fieldFormReset={fieldFormReset}
+        />
       )}
     </>
   );
