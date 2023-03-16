@@ -68,6 +68,34 @@ export default function PreRenderField({ field }: { field: Field }) {
           </div>
         </>
       );
+    case "radio":
+      return (
+        <>
+          <label className="text-base font-semibold text-gray-900">
+            {field.label}
+          </label>
+          <fieldset>
+            <div className="space-y-4">
+              {field.options.map((opt) => (
+                <div key={opt.id} className="flex items-center">
+                  <input
+                    type="radio"
+                    id={opt.id}
+                    name={field.name}
+                    className="h-4 w-4 border-gray-300 text-gray-600 focus:ring-gray-600"
+                  />
+                  <label
+                    htmlFor={opt.id}
+                    className="ml-3 block text-sm font-medium leading-6 text-gray-900"
+                  >
+                    {opt.value}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </fieldset>
+        </>
+      );
   }
 
   return <></>;

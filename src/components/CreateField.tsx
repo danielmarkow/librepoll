@@ -27,7 +27,7 @@ export default function CreateField({ formId }: { formId: string }) {
       toast.success("created field");
       setFieldId(data.id);
 
-      if (data.type in ["text", "number"]) {
+      if (data.type === "text" || data.type === "number") {
         fieldFormReset();
         client.form.getForm.invalidate();
       }
@@ -100,22 +100,23 @@ export default function CreateField({ formId }: { formId: string }) {
             {...register("fieldName")}
           />
         </div>
+
+        <label
+          htmlFor="fieldLabel"
+          className="mt-1 block text-sm font-medium leading-6 text-gray-900"
+        >
+          label
+        </label>
+        <div>
+          <input
+            type="text"
+            id="fieldName"
+            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            {...register("fieldLabel")}
+          />
+        </div>
         {watch("fieldType") !== "radio" && (
           <>
-            <label
-              htmlFor="fieldLabel"
-              className="mt-1 block text-sm font-medium leading-6 text-gray-900"
-            >
-              label
-            </label>
-            <div>
-              <input
-                type="text"
-                id="fieldName"
-                className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                {...register("fieldLabel")}
-              />
-            </div>
             <label
               htmlFor="fieldRequired"
               className="mt-1 block text-sm font-medium leading-6 text-gray-900"
