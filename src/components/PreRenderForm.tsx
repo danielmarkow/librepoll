@@ -20,9 +20,11 @@ export default function PreRenderForm() {
       {isSuccess && (
         <>
           <h1 className="text-xl">{data!.name}</h1>
-          {data?.fields.map((field) => (
-            <PreRenderField field={field} />
-          ))}
+          {data?.fields.map((field) => {
+            if (field.type !== "radio") {
+              return <PreRenderField field={field} />;
+            }
+          })}
         </>
       )}
       {isSuccess && JSON.stringify(data)}
