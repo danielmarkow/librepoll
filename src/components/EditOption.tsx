@@ -5,15 +5,13 @@ import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 
 export default function EditOption() {
-  const { currentFieldId, setCurrentFieldId } = formHook()!;
+  const { currentFieldId } = formHook()!;
 
   const {
     register,
-    reset: optionFormReset,
     handleSubmit,
     formState: { errors },
     control,
-    setValue,
   } = useForm();
 
   const { fields, append /*, prepend, remove, swap, move, insert*/ } =
