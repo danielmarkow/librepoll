@@ -57,4 +57,12 @@ export const fieldRouter = createTRPCRouter({
 
       return ctx.prisma.$transaction(fieldsToCreate);
     }),
+  deleteField: protectedProcedure
+    .input(z.object({ fieldId: z.string().cuid() }))
+    .mutation(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.field.delete({
+        where: { id: input.fieldId },
+      });
+    }),
 });

@@ -19,13 +19,13 @@ export default function PreRenderForm() {
       <p>currently working on: {currentFormId}</p>
       {isSuccess && (
         <>
-          <h1 className="text-xl">{data!.name}</h1>
+          <h1 className="ml-1 text-xl">{data!.name}</h1>
           {data?.fields.map((field) => {
             return <PreRenderField field={field} />;
           })}
         </>
       )}
-      {isSuccess && JSON.stringify(data)}
+      {/* {isSuccess && JSON.stringify(data)} */}
     </>
   );
 }

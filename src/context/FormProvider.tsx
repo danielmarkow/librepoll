@@ -8,9 +8,13 @@ export default function FormProvider({
 }) {
   const [currentFormId, setCurrentFormId] = useState<string>("");
 
+  const [currentFieldId, setCurrentFieldId] = useState<string>("");
+
   const value = {
     currentFormId,
     setCurrentFormId,
+    currentFieldId,
+    setCurrentFieldId,
   };
 
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>;

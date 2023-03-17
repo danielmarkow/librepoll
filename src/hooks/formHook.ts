@@ -5,6 +5,8 @@ import { FormContext } from "~/context/FormContext";
 type FormContextType = {
   currentFormId: string;
   setCurrentFormId: Dispatch<SetStateAction<string>>;
+  currentFieldId: string;
+  setCurrentFieldId: Dispatch<SetStateAction<string>>;
 } | null;
 
 export default function formHook() {

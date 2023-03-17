@@ -8,7 +8,6 @@ import { toast } from "react-hot-toast";
 
 import CreateOption from "./CreateOption";
 import Divider from "./common/Divider";
-import CreateRadio from "./CreateRadio";
 
 const fieldSchema = z.object({
   fieldName: z.string(),
@@ -30,6 +29,7 @@ export default function CreateField({ formId }: { formId: string }) {
       if (data.type === "text" || data.type === "number") {
         fieldFormReset();
         client.form.getForm.invalidate();
+        setFieldId("");
       }
     },
     onError: () => {
@@ -145,13 +145,6 @@ export default function CreateField({ formId }: { formId: string }) {
       </form>
       <br />
       <Divider />
-      {/* {watch("fieldType") === "radio" && (
-        <CreateRadio
-          formId={formId}
-          fieldFormReset={fieldFormReset}
-          fieldName={watch("fieldName")}
-        />
-      )} */}
       {getValues("fieldType") === "select" && fieldId !== "" && (
         <CreateOption
           fieldId={fieldId}
