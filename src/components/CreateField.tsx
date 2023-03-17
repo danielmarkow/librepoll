@@ -8,6 +8,7 @@ import { toast } from "react-hot-toast";
 
 import CreateOption from "./CreateOption";
 import Divider from "./common/Divider";
+import formHook from "~/hooks/formHook";
 
 const fieldSchema = z.object({
   fieldName: z.string(),
@@ -16,14 +17,15 @@ const fieldSchema = z.object({
   fieldRequired: z.enum(["no", "yes"]),
 });
 
-export default function CreateField({ formId }: { formId: string }) {
+export default function CreateField() {
+  const { currentFormId } = formHook()!;
+
   const [fieldId, setFieldId] = useState<string>("");
 
   const client = api.useContext();
 
   const createFieldMutation = api.field.createField.useMutation({
     onSuccess: (data) => {
-      toast.success("created field");
       setFieldId(data.id);
 
       if (data.type === "text" || data.type === "number") {
@@ -60,8 +62,10 @@ export default function CreateField({ formId }: { formId: string }) {
   };
 
   const onSubmit = (data: FieldValues) => {
-    console.log({ ...data, formId: formId });
-    createFieldMutation.mutate({ ...data, formId } as FormMutationInput);
+    createFieldMutation.mutate({
+      ...data,
+      formId: currentFormId,
+    } as FormMutationInput);
   };
 
   return (
