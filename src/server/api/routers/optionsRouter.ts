@@ -23,8 +23,7 @@ export const optionsRouter = createTRPCRouter({
         });
       });
 
-      const createdOptions = await ctx.prisma.$transaction(optionsToCreate);
-      return createdOptions;
+      return ctx.prisma.$transaction(optionsToCreate);
     }),
   getOptions: protectedProcedure
     .input(z.object({ fieldId: z.string().cuid() }))

@@ -50,13 +50,8 @@ export default function EditOption() {
     const optionsToCreate = data.option.filter(
       (opt: Option) => !Object.keys(opt).includes("id")
     );
-    console.log("all: ", data);
-    console.log("update: ", optionsToUpdate);
+
     updateOptionsMut.mutate({ options: optionsToUpdate });
-    console.log("create: ", {
-      fieldId: currentFieldId,
-      options: optionsToCreate,
-    });
     createOptionsMut.mutate({
       fieldId: currentFieldId,
       options: optionsToCreate,
@@ -84,7 +79,7 @@ export default function EditOption() {
         <Button type="button" onClick={() => void append({})}>
           +
         </Button>
-        <Button type="submit">Create Options</Button>
+        <Button type="submit">save options</Button>
       </form>
     </>
   );
