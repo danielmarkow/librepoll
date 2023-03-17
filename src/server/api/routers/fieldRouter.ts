@@ -68,10 +68,35 @@ export const fieldRouter = createTRPCRouter({
   getField: protectedProcedure
     .input(z.object({ fieldId: z.string().cuid() }))
     .query(({ ctx, input }) => {
+      // TODO check if user owns it
       const userId = ctx.session?.user?.id;
       return ctx.prisma.field.findFirst({
         where: { id: input.fieldId },
-        include: { options: true },
+      });
+    }),
+  updateField: protectedProcedure
+    .input(
+      z.object({
+        fieldId: z.string().cuid(),
+        fieldName: z.string(),
+        fieldLabel: z.string(),
+        fieldType: z.string(),
+        fieldRequired: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      const { fieldId, fieldName, fieldLabel, fieldType, fieldRequired } =
+        input;
+      // TODO verify that user owns it
+      return ctx.prisma.field.update({
+        where: { id: fieldId },
+        data: {
+          name: fieldName,
+          label: fieldLabel,
+          type: fieldType,
+          required: fieldRequired === "yes" ? true : false,
+        },
       });
     }),
 });

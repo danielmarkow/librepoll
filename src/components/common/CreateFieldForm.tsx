@@ -4,6 +4,7 @@ import type {
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
+import Button from "./Button";
 
 type FormValues = {
   fieldName: string;
@@ -25,7 +26,6 @@ export default function CreateFieldForm({
 }) {
   return (
     <>
-      <p>create field</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label
           htmlFor="fieldType"
@@ -95,12 +95,7 @@ export default function CreateFieldForm({
           </>
         )}
 
-        <button
-          type="submit"
-          className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-        >
-          Create Field
-        </button>
+        <Button type="submit">Save</Button>
       </form>
     </>
   );
