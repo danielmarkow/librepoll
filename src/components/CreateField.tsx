@@ -25,10 +25,9 @@ export default function CreateField({ formId }: { formId: string }) {
   const createFieldMutation = api.field.createField.useMutation({
     onSuccess: (data) => {
       toast.success("created field");
-      if (data.type === "select") {
-        setFieldId(data.id);
-      }
-      if (data.type !== "select") {
+      setFieldId(data.id);
+
+      if (data.type === "text" || data.type === "number") {
         fieldFormReset();
         client.form.getForm.invalidate();
       }
@@ -101,22 +100,23 @@ export default function CreateField({ formId }: { formId: string }) {
             {...register("fieldName")}
           />
         </div>
+
+        <label
+          htmlFor="fieldLabel"
+          className="mt-1 block text-sm font-medium leading-6 text-gray-900"
+        >
+          label
+        </label>
+        <div>
+          <input
+            type="text"
+            id="fieldName"
+            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            {...register("fieldLabel")}
+          />
+        </div>
         {watch("fieldType") !== "radio" && (
           <>
-            <label
-              htmlFor="fieldLabel"
-              className="mt-1 block text-sm font-medium leading-6 text-gray-900"
-            >
-              label
-            </label>
-            <div>
-              <input
-                type="text"
-                id="fieldName"
-                className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                {...register("fieldLabel")}
-              />
-            </div>
             <label
               htmlFor="fieldRequired"
               className="mt-1 block text-sm font-medium leading-6 text-gray-900"
@@ -135,25 +135,31 @@ export default function CreateField({ formId }: { formId: string }) {
             </div>
           </>
         )}
-        {watch("fieldType") !== "radio" && (
-          <button
-            type="submit"
-            className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-          >
-            Create Field
-          </button>
-        )}
+
+        <button
+          type="submit"
+          className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+        >
+          Create Field
+        </button>
       </form>
       <br />
-      {watch("fieldType") !== "radio" && <Divider />}
-      {watch("fieldType") === "radio" && (
+      <Divider />
+      {/* {watch("fieldType") === "radio" && (
         <CreateRadio
           formId={formId}
           fieldFormReset={fieldFormReset}
           fieldName={watch("fieldName")}
         />
-      )}
+      )} */}
       {getValues("fieldType") === "select" && fieldId !== "" && (
+        <CreateOption
+          fieldId={fieldId}
+          setFieldId={setFieldId}
+          fieldFormReset={fieldFormReset}
+        />
+      )}
+      {getValues("fieldType") === "radio" && fieldId !== "" && (
         <CreateOption
           fieldId={fieldId}
           setFieldId={setFieldId}

@@ -21,9 +21,7 @@ export default function PreRenderForm() {
         <>
           <h1 className="text-xl">{data!.name}</h1>
           {data?.fields.map((field) => {
-            if (field.type !== "radio") {
-              return <PreRenderField field={field} />;
-            }
+            return <PreRenderField field={field} />;
           })}
         </>
       )}
