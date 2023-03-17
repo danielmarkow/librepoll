@@ -65,4 +65,13 @@ export const fieldRouter = createTRPCRouter({
         where: { id: input.fieldId },
       });
     }),
+  getField: protectedProcedure
+    .input(z.object({ fieldId: z.string().cuid() }))
+    .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.field.findFirst({
+        where: { id: input.fieldId },
+        include: { options: true },
+      });
+    }),
 });
