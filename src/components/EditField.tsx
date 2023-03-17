@@ -6,6 +6,7 @@ import { api } from "~/utils/api";
 import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import CreateFieldForm from "./common/CreateFieldForm";
+import EditOption from "./EditOption";
 
 const fieldSchema = z.object({
   fieldName: z.string(),
@@ -83,7 +84,8 @@ export default function EditField() {
         watch={watch}
         onSubmit={onSubmit}
       />
-      {getFieldQuery.isSuccess && JSON.stringify(getFieldQuery.data)}
+      {watch("fieldType") === "radio" && <EditOption />}
+      {watch("fieldType") === "select" && <EditOption />}
       <Button onClick={() => setCurrentFieldId("")}>Done</Button>
     </>
   );

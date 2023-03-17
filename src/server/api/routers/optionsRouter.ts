@@ -9,8 +9,9 @@ export const optionsRouter = createTRPCRouter({
         options: z.array(z.object({ value: z.string() })),
       })
     )
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
+      console.log("input: ", input.options);
 
       const optionsToCreate = input.options.map((opt) => {
         return ctx.prisma.option.create({
@@ -22,6 +23,35 @@ export const optionsRouter = createTRPCRouter({
         });
       });
 
-      return ctx.prisma.$transaction(optionsToCreate);
+      const createdOptions = await ctx.prisma.$transaction(optionsToCreate);
+      return createdOptions;
+    }),
+  getOptions: protectedProcedure
+    .input(z.object({ fieldId: z.string().cuid() }))
+    .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.option.findMany({
+        where: { fieldId: input.fieldId, userId },
+      });
+    }),
+  updateOptions: protectedProcedure
+    .input(
+      z.object({
+        options: z.array(
+          z.object({ id: z.string().cuid(), value: z.string() })
+        ),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      const optionsToUpdate = input.options.map((opt) => {
+        return ctx.prisma.option.update({
+          where: { id: opt.id },
+          data: {
+            value: opt.value,
+          },
+        });
+      });
+
+      return ctx.prisma.$transaction(optionsToUpdate);
     }),
 });

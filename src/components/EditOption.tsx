@@ -1,33 +1,11 @@
-import { Dispatch, SetStateAction } from "react";
+import { useForm, useFieldArray, FieldValues } from "react-hook-form";
 
-import {
-  useForm,
-  useFieldArray,
-  FieldValues,
-  UseFormReset,
-} from "react-hook-form";
-
-import Button from "./common/Button";
 import { api } from "~/utils/api";
-import { toast } from "react-hot-toast";
+import Button from "./common/Button";
+import formHook from "~/hooks/formHook";
 
-type FormValuesField = {
-  fieldName: string;
-  fieldLabel: string;
-  fieldType: "text" | "number" | "radio" | "select";
-  fieldRequired: "no" | "yes";
-};
-
-export default function CreateOption({
-  fieldId,
-  fieldFormReset,
-  setFieldId,
-}: {
-  fieldId: string;
-  fieldFormReset: UseFormReset<FormValuesField>;
-  setFieldId: Dispatch<SetStateAction<string>>;
-}) {
-  const utils = api.useContext();
+export default function EditOption() {
+  const { currentFieldId, setCurrentFieldId } = formHook()!;
 
   const {
     register,
@@ -35,6 +13,7 @@ export default function CreateOption({
     handleSubmit,
     formState: { errors },
     control,
+    setValue,
   } = useForm();
 
   const { fields, append /*, prepend, remove, swap, move, insert*/ } =
@@ -43,39 +22,50 @@ export default function CreateOption({
       name: "option",
     });
 
-  const createOptionMutation = api.option.createOption.useMutation({
-    onSuccess: () => {
-      optionFormReset();
-      fieldFormReset();
-      setFieldId("");
-      utils.form.getForm.invalidate();
-    },
-    onError: () => {
-      toast.error("error saving options");
-    },
-  });
+  const getOptionsQuery = api.option.getOptions.useQuery(
+    { fieldId: currentFieldId },
+    {
+      enabled: currentFieldId !== "" && fields.length === 0,
+      onSuccess: (data) => {
+        data.forEach((d) => {
+          append({ id: d.id, value: d.value });
+        });
+      },
+    }
+  );
+
+  const updateOptionsMut = api.option.updateOptions.useMutation();
+  const createOptionsMut = api.option.createOption.useMutation();
 
   type Option = {
+    id?: string;
     value: string;
-  };
-  type MutationData = {
-    fieldId: string;
-    options: Array<Option>;
   };
 
   const onSubmit = (data: FieldValues) => {
-    createOptionMutation.mutate({
-      fieldId,
-      options: data.option,
-    } as MutationData);
+    const optionsToUpdate = data.option.filter((opt: Option) =>
+      Object.keys(opt).includes("id")
+    );
+
+    const optionsToCreate = data.option.filter(
+      (opt: Option) => !Object.keys(opt).includes("id")
+    );
+    console.log("all: ", data);
+    console.log("update: ", optionsToUpdate);
+    updateOptionsMut.mutate({ options: optionsToUpdate });
+    console.log("create: ", {
+      fieldId: currentFieldId,
+      options: optionsToCreate,
+    });
+    createOptionsMut.mutate({
+      fieldId: currentFieldId,
+      options: optionsToCreate,
+    });
   };
 
   return (
     <>
-      {fieldId !== undefined && fieldId !== "" && (
-        <p>fieldid ready: {fieldId}</p>
-      )}
-      <p>create option</p>
+      <p>edit option</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
           <div key={field.id}>

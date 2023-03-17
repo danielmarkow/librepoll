@@ -21,7 +21,7 @@ export default function PreRenderForm() {
         <>
           <h1 className="ml-1 text-xl">{data!.name}</h1>
           {data?.fields.map((field) => {
-            return <PreRenderField field={field} />;
+            return <PreRenderField key={field.id} field={field} />;
           })}
         </>
       )}

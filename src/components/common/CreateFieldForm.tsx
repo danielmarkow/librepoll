@@ -95,7 +95,7 @@ export default function CreateFieldForm({
           </>
         )}
 
-        <Button type="submit">Save</Button>
+        <Button type="submit">save field</Button>
       </form>
     </>
   );
