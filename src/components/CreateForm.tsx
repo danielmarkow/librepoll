@@ -12,6 +12,7 @@ import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import EditField from "./EditField";
 import EditForm from "./EditForm";
+import CreateFormForm from "./common/CreateFormForm";
 
 const formSchema = z.object({ formName: z.string().min(5) });
 
@@ -50,34 +51,14 @@ export default function CreateForm() {
     <>
       <Button onClick={() => void signOut()}>sign out</Button>
       <p>currently working on: {currentFormId}</p>
-      {currentFormId === "" && currentFormId === null && (
+      {currentFormId === "" && (
         <>
           <p>create new form</p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {/* TODO add form description */}
-            <div>
-              <label
-                htmlFor="formName"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                form name
-              </label>
-              <div className="mt-1">
-                <input
-                  type="input"
-                  id="formName"
-                  className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                  {...register("formName")}
-                />
-              </div>
-              <button
-                type="submit"
-                className="mt-2 rounded bg-white py-1 px-2 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              >
-                Create Form
-              </button>
-            </div>
-          </form>
+          <CreateFormForm
+            handleSubmit={handleSubmit}
+            onSubmit={onSubmit}
+            register={register}
+          />
           <br />
           <Divider />
         </>
