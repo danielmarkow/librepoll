@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 import PreRenderField from "./PreRenderField";
 
 export default function PreRenderForm() {
-  const { currentFormId, setCurrentFormId } = formHook()!;
+  const { currentFormId, setEditFormFlag } = formHook()!;
 
   const { data, isSuccess } = api.form.getForm.useQuery(
     { formId: currentFormId },
@@ -26,7 +26,10 @@ export default function PreRenderForm() {
               <h1 className="ml-1 text-xl">{data!.name}</h1>
             </div>
             <div>
-              <PencilSquareIcon className="mt-2 h-5 w-5 cursor-pointer" />
+              <PencilSquareIcon
+                className="mt-2 h-5 w-5 cursor-pointer"
+                onClick={() => void setEditFormFlag(true)}
+              />
             </div>
           </div>
           {data?.fields.map((field) => {
@@ -34,7 +37,6 @@ export default function PreRenderForm() {
           })}
         </>
       )}
-      {/* {isSuccess && JSON.stringify(data)} */}
     </>
   );
 }

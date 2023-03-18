@@ -1,21 +1,24 @@
 import { z } from "zod";
 import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+import { signOut } from "next-auth/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { api } from "~/utils/api";
 import CreateField from "./CreateField";
 import Divider from "./common/Divider";
 import Button from "./common/Button";
-import { signOut } from "next-auth/react";
 import formHook from "~/hooks/formHook";
 import EditField from "./EditField";
+import EditForm from "./EditForm";
 
 const formSchema = z.object({ formName: z.string().min(5) });
 
 export default function CreateForm() {
   // TODO figure out a way so that typescript does not want the "!"
-  const { currentFormId, setCurrentFormId, currentFieldId } = formHook()!;
+  const { currentFormId, setCurrentFormId, currentFieldId, editFormFlag } =
+    formHook()!;
 
   const createFormMutation = api.form.createForm.useMutation({
     onSuccess: (data) => {
@@ -49,8 +52,9 @@ export default function CreateForm() {
       <p>currently working on: {currentFormId}</p>
       {currentFormId === "" && currentFormId === null && (
         <>
-          <p>create form</p>
+          <p>create new form</p>
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* TODO add form description */}
             <div>
               <label
                 htmlFor="formName"
@@ -79,8 +83,13 @@ export default function CreateForm() {
         </>
       )}
 
-      {currentFormId !== "" && currentFieldId === "" && <CreateField />}
+      {currentFormId !== "" &&
+        currentFieldId === "" &&
+        editFormFlag === false && <CreateField />}
       {currentFormId !== "" && currentFieldId !== "" && <EditField />}
+      {currentFormId !== "" && currentFieldId === "" && editFormFlag && (
+        <EditForm />
+      )}
     </>
   );
 }

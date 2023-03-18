@@ -71,7 +71,7 @@ export default function CreateField() {
 
   return (
     <>
-      <p>create field</p>
+      <p>create new field</p>
       <CreateFieldForm
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
