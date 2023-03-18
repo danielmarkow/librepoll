@@ -40,8 +40,19 @@ export const formRouter = createTRPCRouter({
       return ctx.prisma.form.findFirst({
         where: { AND: [{ id: input.formId }, { userId }] },
         select: {
-          id: true,
           name: true,
+        },
+      });
+    }),
+  updateForm: protectedProcedure
+    .input(z.object({ formId: z.string().cuid(), formName: z.string().min(5) }))
+    .mutation(({ ctx, input }) => {
+      // const userId = ctx.session?.user?.id;
+      // TODO verify that user owns it
+      return ctx.prisma.form.update({
+        where: { id: input.formId },
+        data: {
+          name: input.formName,
         },
       });
     }),

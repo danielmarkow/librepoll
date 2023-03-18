@@ -85,7 +85,7 @@ export const fieldRouter = createTRPCRouter({
       })
     )
     .mutation(({ ctx, input }) => {
-      const userId = ctx.session?.user?.id;
+      // const userId = ctx.session?.user?.id;
       const { fieldId, fieldName, fieldLabel, fieldType, fieldRequired } =
         input;
       // TODO verify that user owns it
