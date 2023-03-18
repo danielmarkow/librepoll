@@ -32,4 +32,17 @@ export const formRouter = createTRPCRouter({
       where: { userId },
     });
   }),
+  // TODO find better names for procedures
+  getOnlyForm: protectedProcedure
+    .input(z.object({ formId: z.string().cuid() }))
+    .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.form.findFirst({
+        where: { AND: [{ id: input.formId }, { userId }] },
+        select: {
+          id: true,
+          name: true,
+        },
+      });
+    }),
 });

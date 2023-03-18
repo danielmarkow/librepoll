@@ -27,10 +27,8 @@ export default function EditField() {
 
   const {
     register,
-    reset: fieldFormReset,
     handleSubmit,
     formState: { errors },
-    getValues,
     watch,
     setValue,
   } = useForm<FormValues>({
