@@ -57,4 +57,46 @@ export const fieldRouter = createTRPCRouter({
 
       return ctx.prisma.$transaction(fieldsToCreate);
     }),
+  deleteField: protectedProcedure
+    .input(z.object({ fieldId: z.string().cuid() }))
+    .mutation(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.field.delete({
+        where: { id: input.fieldId },
+      });
+    }),
+  getField: protectedProcedure
+    .input(z.object({ fieldId: z.string().cuid() }))
+    .query(({ ctx, input }) => {
+      // TODO check if user owns it
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.field.findFirst({
+        where: { id: input.fieldId },
+      });
+    }),
+  updateField: protectedProcedure
+    .input(
+      z.object({
+        fieldId: z.string().cuid(),
+        fieldName: z.string(),
+        fieldLabel: z.string(),
+        fieldType: z.string(),
+        fieldRequired: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      // const userId = ctx.session?.user?.id;
+      const { fieldId, fieldName, fieldLabel, fieldType, fieldRequired } =
+        input;
+      // TODO verify that user owns it
+      return ctx.prisma.field.update({
+        where: { id: fieldId },
+        data: {
+          name: fieldName,
+          label: fieldLabel,
+          type: fieldType,
+          required: fieldRequired === "yes" ? true : false,
+        },
+      });
+    }),
 });

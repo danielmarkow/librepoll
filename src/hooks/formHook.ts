@@ -5,6 +5,10 @@ import { FormContext } from "~/context/FormContext";
 type FormContextType = {
   currentFormId: string;
   setCurrentFormId: Dispatch<SetStateAction<string>>;
+  currentFieldId: string;
+  setCurrentFieldId: Dispatch<SetStateAction<string>>;
+  editFormFlag: boolean;
+  setEditFormFlag: Dispatch<SetStateAction<boolean>>;
 } | null;
 
 export default function formHook() {

@@ -43,7 +43,7 @@ model Field {
 model Option {
     id      String @id @default(cuid())
     value   String
-    field   Field  @relation(fields: [fieldId], references: [id])
+    field   Field  @relation(fields: [fieldId], references: [id], onDelete: Cascade)
     fieldId String
     user    User   @relation(fields: [userId], references: [id])
     userId  String

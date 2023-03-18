@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 import {
   useForm,
   useFieldArray,
@@ -8,7 +10,6 @@ import {
 import Button from "./common/Button";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
-import { Dispatch, SetStateAction } from "react";
 
 type FormValuesField = {
   fieldName: string;
@@ -44,11 +45,13 @@ export default function CreateOption({
 
   const createOptionMutation = api.option.createOption.useMutation({
     onSuccess: () => {
-      toast.success("options saved");
       optionFormReset();
       fieldFormReset();
       setFieldId("");
       utils.form.getForm.invalidate();
+    },
+    onError: () => {
+      toast.error("error saving options");
     },
   });
 
