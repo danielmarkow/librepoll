@@ -3,6 +3,7 @@ import { useForm, useFieldArray, FieldValues } from "react-hook-form";
 import { api } from "~/utils/api";
 import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
+import { toast } from "react-hot-toast";
 
 export default function EditOption() {
   const { currentFieldId } = formHook()!;
@@ -32,7 +33,16 @@ export default function EditOption() {
     }
   );
 
-  const updateOptionsMut = api.option.updateOptions.useMutation();
+  const client = api.useContext();
+
+  const updateOptionsMut = api.option.updateOptions.useMutation({
+    onSuccess: () => {
+      client.form.getForm.invalidate();
+    },
+    onError: () => {
+      toast.error("error updating options");
+    },
+  });
   const createOptionsMut = api.option.createOption.useMutation();
 
   type Option = {
