@@ -54,18 +54,16 @@ export default function CreateForm() {
 
   return (
     <>
-      <Button onClick={() => void signOut()}>sign out</Button>
-      <p>currently working on: {currentFormId}</p>
+      {/* <Button onClick={() => void signOut()}>sign out</Button> */}
+      {/* <p>currently working on: {currentFormId}</p> */}
       {currentFormId === "" && (
         <>
-          <p>create new form</p>
+          <p className="mt-1 text-lg">create new form</p>
           <CreateFormForm
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
             register={register}
           />
-          <br />
-          <Divider />
         </>
       )}
 

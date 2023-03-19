@@ -71,7 +71,7 @@ export default function CreateField() {
 
   return (
     <>
-      <p>create new field</p>
+      <p className="mt-1 text-lg">create new field</p>
       <CreateFieldForm
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
@@ -79,7 +79,7 @@ export default function CreateField() {
         watch={watch}
       />
       <br />
-      <Divider />
+      {/* <Divider /> */}
       {getValues("fieldType") === "select" && fieldId !== "" && (
         <CreateOption
           fieldId={fieldId}

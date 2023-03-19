@@ -40,7 +40,7 @@ export default function PreRenderField({ field }: { field: Field }) {
     case "text":
       return (
         <div className="flex gap-2">
-          <div className="border-1 mt-2 ml-1 w-2/3 border border-dotted border-gray-300 p-1">
+          <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
             <label
               htmlFor={field.id}
               className="block text-sm font-medium leading-6 text-gray-900"
@@ -73,7 +73,7 @@ export default function PreRenderField({ field }: { field: Field }) {
     case "number":
       return (
         <div className="flex gap-2">
-          <div className="border-1 mt-2 ml-1 w-2/3 border border-dotted border-gray-300 p-1">
+          <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
             <label
               htmlFor={field.id}
               className="block text-sm font-medium leading-6 text-gray-900"
@@ -105,7 +105,7 @@ export default function PreRenderField({ field }: { field: Field }) {
     case "select":
       return (
         <div className="flex gap-2">
-          <div className="border-1 ml-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
+          <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
             <label>{field.label}</label>
             <div>
               <select className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
@@ -134,8 +134,10 @@ export default function PreRenderField({ field }: { field: Field }) {
     case "radio":
       return (
         <div className="flex gap-2">
-          <div className="border-1 mt-2 ml-1 w-2/3 border border-dotted border-gray-300 p-1">
-            <label className="text-base text-gray-900">{field.label}</label>
+          <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              {field.label}
+            </label>
             <fieldset>
               <div className="space-y-4">
                 {field.options.map((opt) => (

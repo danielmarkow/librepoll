@@ -17,12 +17,12 @@ export default function PreRenderForm() {
 
   return (
     <>
-      <p>form previews</p>
-      <p>currently working on: {currentFormId}</p>
+      <p className="mt-1 text-lg">form preview</p>
+      {/* <p>currently working on: {currentFormId}</p> */}
       {isSuccess && (
         <>
           <div className="flex gap-2">
-            <div className="border-1 mt-2 ml-1 w-2/3 border border-dotted border-gray-300 p-1">
+            <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
               <h1 className="ml-1 text-xl">{data!.name}</h1>
             </div>
             <div>
