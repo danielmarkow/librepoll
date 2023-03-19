@@ -2,17 +2,19 @@ import { type NextPage } from "next";
 import { signIn, useSession } from "next-auth/react";
 
 import FormSelector from "~/components/FormSelector";
+import Loading from "~/components/common/Loading";
 
 const Home: NextPage = () => {
-  const { data: sessionData } = useSession();
+  const { data: sessionData, status: sessionStatus } = useSession();
   return (
     <>
       <main>
-        {sessionData ? (
+        {sessionData && sessionStatus === "authenticated" && (
           <>
             <FormSelector />
           </>
-        ) : (
+        )}
+        {!sessionData && (
           <>
             <div className="mx-auto flex h-screen max-w-2xl items-center text-center">
               <div className="w-full">
@@ -31,6 +33,13 @@ const Home: NextPage = () => {
               </div>
             </div>
           </>
+        )}{" "}
+        {sessionStatus === "loading" && (
+          <div className="mx-auto flex h-screen max-w-2xl items-center text-center">
+            <div className="w-full">
+              <Loading />
+            </div>
+          </div>
         )}
       </main>
     </>
