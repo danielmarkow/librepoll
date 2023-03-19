@@ -13,6 +13,7 @@ import formHook from "~/hooks/formHook";
 import EditField from "./EditField";
 import EditForm from "./EditForm";
 import CreateFormForm from "./common/CreateFormForm";
+import { useEffect } from "react";
 
 const formSchema = z.object({ formName: z.string().min(5) });
 
@@ -20,6 +21,10 @@ export default function CreateForm() {
   // TODO figure out a way so that typescript does not want the "!"
   const { currentFormId, setCurrentFormId, currentFieldId, editFormFlag } =
     formHook()!;
+
+  useEffect(() => {
+    setCurrentFormId("");
+  }, []);
 
   const createFormMutation = api.form.createForm.useMutation({
     onSuccess: (data) => {
