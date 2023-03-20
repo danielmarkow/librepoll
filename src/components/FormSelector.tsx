@@ -19,13 +19,9 @@ export default function FormSelector() {
         {getAllPrivateFormsQuery.isSuccess &&
           getAllPrivateFormsQuery.data.length > 0 &&
           getAllPrivateFormsQuery.data.map((f) => (
-            <div className="mt-1 flex">
+            <div key={f.id} className="mt-1 flex">
               <div className="w-1/3 border-2 border-dashed border-gray-300 px-1 hover:bg-gray-50">
-                <Link
-                  key={f.id}
-                  href={`/forms/${f.id}`}
-                  className="text-gray-600"
-                >
+                <Link href={`/forms/${f.id}`} className="text-gray-600">
                   {f.name}
                 </Link>
               </div>
@@ -61,13 +57,9 @@ export default function FormSelector() {
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length > 0 &&
           getAllPublicFormsQuery.data.map((f) => (
-            <div className="mt-1 flex">
+            <div key={f.id} className="mt-1 flex">
               <div className="w-1/3 border-2 border-dashed border-gray-300 px-1 hover:bg-gray-50">
-                <Link
-                  key={f.id}
-                  href={`/public/forms/${f.id}`}
-                  className="text-gray-600"
-                >
+                <Link href={`/public/forms/${f.id}`} className="text-gray-600">
                   {f.name}
                 </Link>
               </div>
