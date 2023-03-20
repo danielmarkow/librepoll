@@ -23,6 +23,7 @@ model Form {
     fields    Field[]
     user      User     @relation(fields: [userId], references: [id])
     userId    String
+    public    Boolean  @default(false)
 }
 
 // Define the Field model
