@@ -45,7 +45,10 @@ export default function PreRenderField({ field }: { field: Field }) {
               htmlFor={field.id}
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              {field.label}
+              {field.label}{" "}
+              <span className="text-xs text-gray-500">
+                {field.required ? "required" : "not required"}
+              </span>
             </label>
             <div>
               <input
@@ -78,7 +81,10 @@ export default function PreRenderField({ field }: { field: Field }) {
               htmlFor={field.id}
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              {field.label}
+              {field.label}{" "}
+              <span className="text-xs text-gray-500">
+                {field.required ? "required" : "not required"}
+              </span>
             </label>
             <div>
               <input
@@ -106,7 +112,12 @@ export default function PreRenderField({ field }: { field: Field }) {
       return (
         <div className="flex gap-2">
           <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
-            <label>{field.label}</label>
+            <label className="block text-sm font-medium leading-6 text-gray-900">
+              {field.label}{" "}
+              <span className="text-xs text-gray-500">
+                {field.required ? "required" : "not required"}
+              </span>
+            </label>
             <div>
               <select className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
                 {field.options.map((opt, idx) => (
@@ -136,7 +147,10 @@ export default function PreRenderField({ field }: { field: Field }) {
         <div className="flex gap-2">
           <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
             <label className="block text-sm font-medium leading-6 text-gray-900">
-              {field.label}
+              {field.label}{" "}
+              <span className="text-xs text-gray-500">
+                {field.required ? "required" : "not required"}
+              </span>
             </label>
             <fieldset>
               <div className="space-y-4">

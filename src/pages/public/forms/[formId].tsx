@@ -7,17 +7,33 @@ import { api } from "~/utils/api";
 import RenderField from "~/components/RenderField";
 import Button from "~/components/common/Button";
 
-const mapFieldTypeToZod = (fieldType: string) => {
+const mapFieldTypeToZod = (fieldType: string, required: boolean) => {
   // TODO possibly expand to more validation options configured by the form creator
   switch (fieldType) {
     case "text":
-      return z.string();
+      if (required) {
+        return z.string();
+      } else {
+        return z.string().optional();
+      }
     case "number":
-      return z.number();
+      if (required) {
+        return z.number();
+      } else {
+        return z.number().optional();
+      }
     case "select":
-      return z.string();
+      if (required) {
+        return z.string();
+      } else {
+        return z.string().optional();
+      }
     case "radio":
-      return z.string();
+      if (required) {
+        return z.string();
+      } else {
+        return z.string().optional();
+      }
   }
 };
 
@@ -36,7 +52,9 @@ export default function PublicForm() {
       staleTime: Infinity,
       onSuccess: (data) => {
         data?.fields.forEach((f) =>
-          Object.assign(schemaObj, { [f.name]: mapFieldTypeToZod(f.type) })
+          Object.assign(schemaObj, {
+            [f.name]: mapFieldTypeToZod(f.type, f.required),
+          })
         );
         formSchema = z.object(schemaObj);
       },
