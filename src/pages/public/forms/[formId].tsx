@@ -33,6 +33,7 @@ export default function PublicForm() {
     { formId: formId as string },
     {
       enabled: formId !== undefined,
+      staleTime: Infinity,
       onSuccess: (data) => {
         data?.fields.forEach((f) =>
           Object.assign(schemaObj, { [f.name]: mapFieldTypeToZod(f.type) })
@@ -55,13 +56,6 @@ export default function PublicForm() {
   return (
     <>
       <div>
-        {/* {publicFormQuery.isSuccess && JSON.stringify(publicFormQuery.data)} */}
-        <br />
-        {/* {publicFormQuery.isSuccess &&
-          JSON.stringify(publicFormQuery.data?.fields.map((f) => f.type))}
-        {publicFormQuery.isSuccess &&
-          JSON.stringify(publicFormQuery.data?.fields.map((f) => f.name))} */}
-
         <h1 className="text-xl">
           {publicFormQuery.isSuccess && publicFormQuery.data!.name}
         </h1>
