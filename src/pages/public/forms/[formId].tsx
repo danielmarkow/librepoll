@@ -73,13 +73,11 @@ export default function PublicForm() {
 
   return (
     <>
-      <div>
-        <h1 className="text-xl">
-          {publicFormQuery.isSuccess && publicFormQuery.data!.name}
-        </h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {publicFormQuery.isSuccess &&
-            publicFormQuery.data!.fields.map((f) => (
+      {publicFormQuery.isSuccess && (
+        <div>
+          <h1 className="text-xl">{publicFormQuery.data!.name}</h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {publicFormQuery.data!.fields.map((f) => (
               <RenderField
                 key={f.id}
                 field={f}
@@ -87,9 +85,10 @@ export default function PublicForm() {
                 errors={errors}
               />
             ))}
-          <Button type="submit">Submit</Button>
-        </form>
-      </div>
+            <Button type="submit">Submit</Button>
+          </form>
+        </div>
+      )}
     </>
   );
 }
