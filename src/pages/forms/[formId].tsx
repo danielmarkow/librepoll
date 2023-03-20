@@ -9,6 +9,7 @@ import PreRenderForm from "~/components/PreRenderForm";
 import Button from "~/components/common/Button";
 
 import formHook from "~/hooks/formHook";
+import { api } from "~/utils/api";
 
 export default function FormEdit() {
   const { data: sessionData } = useSession();
@@ -17,34 +18,59 @@ export default function FormEdit() {
 
   const { currentFormId, setCurrentFormId } = formHook()!;
 
+  const checkIfPublic = api.form.checkIfPublic.useQuery(
+    { formId: formId as string },
+    {
+      enabled: currentFormId !== undefined && currentFormId !== null,
+      staleTime: Infinity,
+      // onSuccess: (data) => {
+      //   if (data?.public === true) {
+      //     setCurrentFormId("");
+      //   } else {
+      //     setCurrentFormId(formId as string);
+      //   }
+      // },
+    }
+  );
+
   useEffect(() => {
     setCurrentFormId(formId as string);
   });
 
   return (
     <>
-      {sessionData ? (
-        <>
-          <Link href={"/"}>
-            <Button>
-              <HomeIcon className="h-5 w-5" />
-            </Button>
-          </Link>
-          <div className="mt-1 grid grid-cols-2 gap-1">
-            <div className="h-screen border-2 border-dashed border-gray-300 p-1">
-              <CreateForm />
+      {/* {checkIfPublic.isSuccess && JSON.stringify(checkIfPublic.data)} */}
+      <Link href={"/"}>
+        <Button>
+          <HomeIcon className="h-5 w-5" />
+        </Button>
+      </Link>
+
+      {sessionData &&
+        checkIfPublic.isSuccess &&
+        checkIfPublic.data?.public === false && (
+          <>
+            <div className="mt-1 grid grid-cols-2 gap-1">
+              <div className="h-screen border-2 border-dashed border-gray-300 p-1">
+                <CreateForm />
+              </div>
+              <div className="h-screen border-2 border-dashed border-gray-300 p-1">
+                <PreRenderForm />
+              </div>
             </div>
-            <div className="h-screen border-2 border-dashed border-gray-300 p-1">
-              <PreRenderForm />
-            </div>
-          </div>
-        </>
-      ) : (
+          </>
+        )}
+      {!sessionData && (
         <>
           <p>please login to edit forms</p>
           <Button onClick={() => void signIn()}>login</Button>
         </>
       )}
+      {sessionData &&
+        checkIfPublic.isSuccess &&
+        checkIfPublic.data?.public === true && (
+          <p>this form is public. please switch to private to edit.</p>
+        )}
     </>
   );
 }

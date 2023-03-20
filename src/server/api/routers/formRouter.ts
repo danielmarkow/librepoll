@@ -17,6 +17,18 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
+  checkIfPublic: protectedProcedure
+    .input(z.object({ formId: z.string().cuid() }))
+    .query(({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      return ctx.prisma.form.findFirst({
+        where: { id: input.formId, userId },
+        select: {
+          id: true,
+          public: true,
+        },
+      });
+    }),
   getForm: protectedProcedure
     .input(z.object({ formId: z.string().cuid() }))
     .query(({ ctx, input }) => {
