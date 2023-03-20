@@ -1,10 +1,11 @@
 import { useRouter } from "next/router";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { api } from "~/utils/api";
 import RenderField from "~/components/RenderField";
+import Button from "~/components/common/Button";
 
 const mapFieldTypeToZod = (fieldType: string) => {
   // TODO possibly expand to more validation options configured by the form creator
@@ -45,9 +46,11 @@ export default function PublicForm() {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
-    setValue,
   } = useForm({ resolver: zodResolver(formSchema) });
+
+  const onSubmit = (data: FieldValues) => {
+    console.log(data);
+  };
 
   return (
     <>
@@ -62,11 +65,17 @@ export default function PublicForm() {
         <h1 className="text-xl">
           {publicFormQuery.isSuccess && publicFormQuery.data!.name}
         </h1>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {publicFormQuery.isSuccess &&
             publicFormQuery.data!.fields.map((f) => (
-              <RenderField field={f} register={register} />
+              <RenderField
+                key={f.id}
+                field={f}
+                register={register}
+                errors={errors}
+              />
             ))}
+          <Button type="submit">Submit</Button>
         </form>
       </div>
     </>

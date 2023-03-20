@@ -1,4 +1,4 @@
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
 
 type Option = {
   id: string;
@@ -17,9 +17,11 @@ type Field = {
 export default function RenderField({
   field,
   register,
+  errors,
 }: {
   field: Field;
   register: UseFormRegister<FieldValues>;
+  errors: FieldErrors<FieldValues>;
 }) {
   switch (field.type) {
     case "text":
@@ -39,6 +41,14 @@ export default function RenderField({
                 className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 {...register(`${field.name}`)}
               />
+              {errors && (
+                <p
+                  className="mt-2 text-sm text-red-600"
+                  id={`${field.name}-errors`}
+                >
+                  {errors[field.name]?.message as string}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -60,6 +70,14 @@ export default function RenderField({
                 {...register(`${field.name}`)}
               />
             </div>
+            {errors && (
+              <p
+                className="mt-2 text-sm text-red-600"
+                id={`${field.name}-errors`}
+              >
+                {errors[field.name]?.message as string}
+              </p>
+            )}
           </div>
         </div>
       );
@@ -79,6 +97,14 @@ export default function RenderField({
                   </option>
                 ))}
               </select>
+              {errors && (
+                <p
+                  className="mt-2 text-sm text-red-600"
+                  id={`${field.name}-errors`}
+                >
+                  {errors[field.name]?.message as string}
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -110,6 +136,14 @@ export default function RenderField({
                   </div>
                 ))}
               </div>
+              {errors && (
+                <p
+                  className="mt-2 text-sm text-red-600"
+                  id={`${field.name}-errors`}
+                >
+                  {errors[field.name]?.message as string}
+                </p>
+              )}
             </fieldset>
           </div>
         </div>
