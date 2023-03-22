@@ -64,7 +64,7 @@ export default function PublicForm() {
 
   const createEntryMutation = api.formData.createEntry.useMutation({
     onSuccess: () => {
-      toast.success("thank you for your submission");
+      router.push("/public/forms/thankyou");
     },
     onError: () => {
       toast.error("technical error submitting data");
