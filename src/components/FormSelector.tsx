@@ -145,7 +145,15 @@ export default function FormSelector() {
                 </Link>
               </div>
               <div>
-                <EyeIcon className="h-5 w-5 cursor-pointer" />
+                <EyeIcon
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={() =>
+                    void updateFormVisibilityMutation.mutate({
+                      formId: f.id,
+                      public: false,
+                    })
+                  }
+                />
                 <ArrowDownTrayIcon
                   className="mt-1 mr-1 h-5 w-5 cursor-pointer"
                   onClick={() => {
