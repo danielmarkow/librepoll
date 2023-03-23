@@ -34,7 +34,7 @@ model Field {
     label    String
     type     String
     required Boolean  @default(false)
-    form     Form     @relation(fields: [formId], references: [id])
+    form     Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
     formId   String
     options  Option[]
     user     User     @relation(fields: [userId], references: [id])

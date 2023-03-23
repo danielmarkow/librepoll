@@ -63,6 +63,15 @@ export default function FormSelector() {
       },
     });
 
+  const deleteFormMutation = api.form.deleteForm.useMutation({
+    onSuccess: () => {
+      client.form.getAllForms.invalidate();
+    },
+    onError: () => {
+      toast.error("technical error deleting the form");
+    },
+  });
+
   // TODO switch submission to json when migrating to mysql?
   type PublicFormData = {
     id: string;
@@ -87,7 +96,12 @@ export default function FormSelector() {
                 </Link>
               </div>
               <div>
-                <TrashIcon className="h-5 w-5 cursor-pointer" />
+                <TrashIcon
+                  className="h-5 w-5 cursor-pointer"
+                  onClick={() =>
+                    void deleteFormMutation.mutate({ formId: f.id })
+                  }
+                />
                 <EyeIcon
                   className="mt-1 mb-1 h-5 w-5 cursor-pointer"
                   onClick={() =>

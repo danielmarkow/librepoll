@@ -112,4 +112,12 @@ export const formRouter = createTRPCRouter({
         },
       });
     }),
+  deleteForm: protectedProcedure
+    .input(z.object({ formId: z.string().cuid() }))
+    .mutation(({ ctx, input }) => {
+      // TODO verify that user owns it
+      return ctx.prisma.form.delete({
+        where: { id: input.formId },
+      });
+    }),
 });
