@@ -126,6 +126,7 @@ export default function RenderField({
                       // name={field.name}
                       className="h-4 w-4 border-gray-300 text-gray-600 focus:ring-gray-600"
                       {...register(`${field.name}`)}
+                      value={opt.value}
                     />
                     <label
                       htmlFor={opt.id}

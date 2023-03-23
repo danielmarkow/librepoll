@@ -39,6 +39,7 @@ export default function FormSelector() {
       enabled: formIdToFetch !== "",
       onSuccess: (data) => {
         exportData(data);
+        setFormIdToFetch("");
       },
       staleTime: Infinity,
     }
