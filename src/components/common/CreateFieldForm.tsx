@@ -51,6 +51,9 @@ export default function CreateFieldForm({
         >
           name
         </label>
+        <p className="mt-0 text-sm text-gray-500">
+          this will be the column name in the results. should be unique
+        </p>
         <div>
           <input
             type="text"
@@ -66,6 +69,9 @@ export default function CreateFieldForm({
         >
           label
         </label>
+        <p className="mt-0 text-sm text-gray-500">
+          this will be displayed in the form
+        </p>
         <div>
           <input
             type="text"

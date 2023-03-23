@@ -72,15 +72,6 @@ export default function FormSelector() {
     },
   });
 
-  // TODO switch submission to json when migrating to mysql?
-  type PublicFormData = {
-    id: string;
-    submission: string;
-    lastUpdatedForm: Date;
-    createdAt: Date;
-    updatedAt: Date;
-  };
-
   return (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
       <h1 className="text-xl font-semibold">form selector</h1>

@@ -7,8 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { api } from "~/utils/api";
 import CreateField from "./CreateField";
-import Divider from "./common/Divider";
-import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import EditField from "./EditField";
 import EditForm from "./EditForm";
@@ -48,14 +46,11 @@ export default function CreateForm() {
   });
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
     createFormMutation.mutate({ name: data.formName });
   };
 
   return (
     <>
-      {/* <Button onClick={() => void signOut()}>sign out</Button> */}
-      {/* <p>currently working on: {currentFormId}</p> */}
       {currentFormId === "" && (
         <>
           <p className="mt-1 text-lg">create new form</p>
