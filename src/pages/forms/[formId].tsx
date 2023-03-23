@@ -16,20 +16,14 @@ export default function FormEdit() {
   const router = useRouter();
   const { formId } = router.query;
 
-  const { currentFormId, setCurrentFormId } = formHook()!;
+  const { currentFormId, setCurrentFormId, setEditFormFlag, editFormFlag } =
+    formHook()!;
 
   const checkIfPublic = api.form.checkIfPublic.useQuery(
     { formId: formId as string },
     {
       enabled: currentFormId !== undefined && currentFormId !== null,
       staleTime: Infinity,
-      // onSuccess: (data) => {
-      //   if (data?.public === true) {
-      //     setCurrentFormId("");
-      //   } else {
-      //     setCurrentFormId(formId as string);
-      //   }
-      // },
     }
   );
 
@@ -39,7 +33,6 @@ export default function FormEdit() {
 
   return (
     <>
-      {/* {checkIfPublic.isSuccess && JSON.stringify(checkIfPublic.data)} */}
       <Link href={"/"}>
         <Button>
           <HomeIcon className="h-5 w-5" />

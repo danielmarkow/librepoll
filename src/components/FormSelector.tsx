@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useRouter } from "next/router";
 import {
   ArrowDownTrayIcon,
   EyeIcon,
@@ -13,7 +13,7 @@ import { api } from "~/utils/api";
 
 export default function FormSelector() {
   const [formIdToFetch, setFormIdToFetch] = useState<string>("");
-
+  const router = useRouter();
   const client = api.useContext();
 
   const getAllPrivateFormsQuery = api.form.getAllForms.useQuery(
@@ -62,6 +62,15 @@ export default function FormSelector() {
         toast.error("technical error setting form public");
       },
     });
+
+  const createFormMutation = api.form.createForm.useMutation({
+    onSuccess: (data) => {
+      router.push({
+        pathname: `/forms/${data.id}`,
+        // query: { fromCreate: true },
+      });
+    },
+  });
 
   const deleteFormMutation = api.form.deleteForm.useMutation({
     onSuccess: () => {
@@ -114,11 +123,16 @@ export default function FormSelector() {
             </div>
           )}
 
-        <Link href={`/forms/create-form`}>
-          <div className="mt-2 w-1/3 border-2 border-dashed border-gray-500 px-1 text-center hover:bg-gray-50 md:mt-1">
-            <span className="inline-flex items-center">create new form</span>
-          </div>
-        </Link>
+        {/* <Link href={`/forms/create-form`}> */}
+        <div
+          className="mt-2 w-1/3 cursor-pointer border-2 border-dashed border-gray-500 px-1 text-center hover:bg-gray-50 md:mt-1"
+          onClick={() =>
+            void createFormMutation.mutate({ name: "my new form" })
+          }
+        >
+          <span className="inline-flex items-center">create new form</span>
+        </div>
+        {/* </Link> */}
         <p className="mt-1 text-lg">public</p>
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length > 0 &&
