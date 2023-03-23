@@ -46,6 +46,7 @@ export const formRouter = createTRPCRouter({
         select: {
           id: true,
           name: true,
+          updatedAt: true,
           fields: {
             select: {
               id: true,

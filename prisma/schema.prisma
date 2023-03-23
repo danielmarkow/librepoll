@@ -16,14 +16,15 @@ datasource db {
 
 // Define the Form model
 model Form {
-    id        String   @id @default(cuid())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    fields    Field[]
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String
-    public    Boolean  @default(false)
+    id             String           @id @default(cuid())
+    name           String
+    createdAt      DateTime         @default(now())
+    updatedAt      DateTime         @updatedAt
+    fields         Field[]
+    user           User             @relation(fields: [userId], references: [id])
+    userId         String
+    public         Boolean          @default(false)
+    publicFormData PublicFormData[]
 }
 
 // Define the Field model
@@ -48,6 +49,18 @@ model Option {
     fieldId String
     user    User   @relation(fields: [userId], references: [id])
     userId  String
+}
+
+// holds the form submissions as stringifyed JSON
+// switch to json type when using mysql
+model PublicFormData {
+    id              String   @id @default(cuid())
+    submission      String
+    lastUpdatedForm DateTime
+    form            Form     @relation(fields: [formId], references: [id])
+    formId          String
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
 }
 
 // Necessary for Next auth

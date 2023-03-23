@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import RenderField from "~/components/RenderField";
 import Button from "~/components/common/Button";
+import { toast } from "react-hot-toast";
 
 const mapFieldTypeToZod = (fieldType: string, required: boolean) => {
   // TODO possibly expand to more validation options configured by the form creator
@@ -61,6 +62,15 @@ export default function PublicForm() {
     }
   );
 
+  const createEntryMutation = api.formData.createEntry.useMutation({
+    onSuccess: () => {
+      router.push("/public/forms/thankyou");
+    },
+    onError: () => {
+      toast.error("technical error submitting data");
+    },
+  });
+
   const {
     register,
     handleSubmit,
@@ -68,7 +78,11 @@ export default function PublicForm() {
   } = useForm({ resolver: zodResolver(formSchema) });
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
+    createEntryMutation.mutate({
+      formId: formId as string,
+      updatedAt: publicFormQuery.data?.updatedAt as Date,
+      submission: JSON.stringify(data),
+    });
   };
 
   return (

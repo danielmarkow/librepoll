@@ -1,15 +1,76 @@
-import { EyeIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+
+import {
+  ArrowDownTrayIcon,
+  EyeIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import csvDownload from "json-to-csv-export";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
+
 import { api } from "~/utils/api";
 
 export default function FormSelector() {
-  const getAllPrivateFormsQuery = api.form.getAllForms.useQuery({});
-  const getAllPublicFormsQuery = api.form.getAllForms.useQuery({
-    public: true,
-  });
+  const [formIdToFetch, setFormIdToFetch] = useState<string>("");
+
+  const client = api.useContext();
+
+  const getAllPrivateFormsQuery = api.form.getAllForms.useQuery(
+    {},
+    {
+      onError: () => {
+        toast.error("technical error retrieving private forms");
+      },
+    }
+  );
+  const getAllPublicFormsQuery = api.form.getAllForms.useQuery(
+    {
+      public: true,
+    },
+    {
+      onError: () => {
+        toast.error("technical error retrieving public forms");
+      },
+    }
+  );
+
+  const getPublicFormDataQuery = api.formData.getFormData.useQuery(
+    { formId: formIdToFetch },
+    {
+      enabled: formIdToFetch !== "",
+      onSuccess: (data) => {
+        const dataToConvert = {
+          data: data.map((d) => JSON.parse(d.submission)),
+          filename: "public_form_result",
+          delimiter: ",",
+          headers: Object.keys(data[0]!),
+        };
+        csvDownload(dataToConvert);
+        setFormIdToFetch("");
+      },
+      staleTime: Infinity,
+    }
+  );
 
   const updateFormVisibilityMutation =
-    api.form.updateFormVisibility.useMutation();
+    api.form.updateFormVisibility.useMutation({
+      onSuccess: () => {
+        client.form.getAllForms.invalidate();
+      },
+      onError: () => {
+        toast.error("technical error setting form public");
+      },
+    });
+
+  // TODO switch submission to json when migrating to mysql?
+  type PublicFormData = {
+    id: string;
+    submission: string;
+    lastUpdatedForm: Date;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 
   return (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -64,7 +125,13 @@ export default function FormSelector() {
                 </Link>
               </div>
               <div>
-                <EyeIcon className="mt-1 mb-1 h-5 w-5 cursor-pointer" />
+                <EyeIcon className="h-5 w-5 cursor-pointer" />
+                <ArrowDownTrayIcon
+                  className="mt-1 mr-1 h-5 w-5 cursor-pointer"
+                  onClick={() => {
+                    setFormIdToFetch(f.id);
+                  }}
+                />
               </div>
             </div>
           ))}
@@ -77,6 +144,8 @@ export default function FormSelector() {
             </div>
           )}
       </div>
+      {/* {getPublicFormDataQuery.isSuccess &&
+        JSON.stringify(getPublicFormDataQuery.data)} */}
     </div>
   );
 }
