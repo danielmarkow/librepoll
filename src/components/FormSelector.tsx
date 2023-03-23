@@ -5,8 +5,10 @@ import {
   EyeIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
+import csvDownload from "json-to-csv-export";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+
 import { api } from "~/utils/api";
 
 export default function FormSelector() {
@@ -38,7 +40,13 @@ export default function FormSelector() {
     {
       enabled: formIdToFetch !== "",
       onSuccess: (data) => {
-        exportData(data);
+        const dataToConvert = {
+          data: data.map((d) => JSON.parse(d.submission)),
+          filename: "public_form_result",
+          delimiter: ",",
+          headers: Object.keys(data[0]!),
+        };
+        csvDownload(dataToConvert);
         setFormIdToFetch("");
       },
       staleTime: Infinity,
@@ -62,18 +70,6 @@ export default function FormSelector() {
     lastUpdatedForm: Date;
     createdAt: Date;
     updatedAt: Date;
-  };
-
-  const exportData = (data: PublicFormData[]) => {
-    const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-      JSON.stringify(data)
-    )}`;
-
-    const link = document.createElement("a");
-    link.href = jsonString;
-    link.download = "data.json";
-
-    link.click();
   };
 
   return (
@@ -148,8 +144,8 @@ export default function FormSelector() {
             </div>
           )}
       </div>
-      {getPublicFormDataQuery.isSuccess &&
-        JSON.stringify(getPublicFormDataQuery.data)}
+      {/* {getPublicFormDataQuery.isSuccess &&
+        JSON.stringify(getPublicFormDataQuery.data)} */}
     </div>
   );
 }

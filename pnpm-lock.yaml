@@ -22,6 +22,7 @@ specifiers:
   autoprefixer: ^10.4.7
   eslint: ^8.34.0
   eslint-config-next: ^13.2.1
+  json-to-csv-export: ^2.1.1
   next: ^13.2.1
   next-auth: ^4.19.0
   postcss: ^8.4.14
@@ -49,6 +50,7 @@ dependencies:
   '@trpc/next': 10.15.0_wlm23eclznxypezh5ngdziwcdq
   '@trpc/react-query': 10.15.0_7cicpoc2aivmas2bivo4obksf4
   '@trpc/server': 10.15.0
+  json-to-csv-export: 2.1.1
   next: 13.2.4_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.20.1_ld2jel3hspngo3u5lti2kgl2sq
   react: 18.2.0
@@ -1908,6 +1910,10 @@ packages:
   /json-stable-stringify-without-jsonify/1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
     dev: true
+
+  /json-to-csv-export/2.1.1:
+    resolution: {integrity: sha512-JQLYqGfaJP4dVV0zIxH6RmHOdnJ32Qch3yDxDtWQy8KsOv73SthVRo38ANXckJxl/WUfGYvvtOlVwPURMTWqlA==}
+    dev: false
 
   /json5/1.0.2:
     resolution: {integrity: sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==}
