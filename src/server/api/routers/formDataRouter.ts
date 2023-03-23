@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { TRPCClientError } from "@trpc/client";
+import { TRPCError } from "@trpc/server";
 
 export const formDataRouter = createTRPCRouter({
   createEntry: publicProcedure
@@ -11,14 +11,16 @@ export const formDataRouter = createTRPCRouter({
         submission: z.string(),
       })
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.prisma.publicFormData.create({
+    .mutation(async ({ ctx, input }) => {
+      const createdForm = await ctx.prisma.publicFormData.create({
         data: {
           form: { connect: { id: input.formId } },
           lastUpdatedForm: input.updatedAt,
           submission: input.submission,
         },
       });
+
+      return { id: createdForm.id };
     }),
   getFormData: protectedProcedure
     .input(z.object({ formId: z.string().cuid() }))
@@ -29,13 +31,16 @@ export const formDataRouter = createTRPCRouter({
       const userForm = await ctx.prisma.form.findFirst({
         where: { id: input.formId, userId },
       });
-
+      // TODO select only latest version
       if (userForm) {
         return ctx.prisma.publicFormData.findMany({
           where: { formId: input.formId },
         });
       }
 
-      throw new TRPCClientError("form does not belong to user");
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "you are not authorized to access",
+      });
     }),
 });

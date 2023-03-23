@@ -40,11 +40,12 @@ export default function FormSelector() {
     {
       enabled: formIdToFetch !== "",
       onSuccess: (data) => {
+        console.log(data);
         const dataToConvert = {
           data: data.map((d) => JSON.parse(d.submission)),
           filename: "public_form_result",
           delimiter: ",",
-          headers: Object.keys(data[0]!),
+          headers: Object.keys(JSON.parse(data[0]?.submission!)),
         };
         csvDownload(dataToConvert);
         setFormIdToFetch("");

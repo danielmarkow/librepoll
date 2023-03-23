@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { TRPCError } from "@trpc/server";
 
 export const formRouter = createTRPCRouter({
   createForm: protectedProcedure
     .input(z.object({ name: z.string() }))
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
-      return ctx.prisma.form.create({
+      const createdForm = await ctx.prisma.form.create({
         data: {
           name: input.name,
           user: {
@@ -16,6 +17,7 @@ export const formRouter = createTRPCRouter({
           },
         },
       });
+      return { id: createdForm.id };
     }),
   checkIfPublic: protectedProcedure
     .input(z.object({ formId: z.string().cuid() }))
@@ -35,7 +37,28 @@ export const formRouter = createTRPCRouter({
       const userId = ctx.session?.user?.id;
       return ctx.prisma.form.findFirst({
         where: { AND: [{ id: input.formId }, { userId }] },
-        include: { fields: { include: { options: true } } },
+        // include: { fields: { include: { options: true } } },
+        select: {
+          id: true,
+          name: true,
+          createdAt: true,
+          updatedAt: true,
+          fields: {
+            select: {
+              id: true,
+              name: true,
+              label: true,
+              type: true,
+              required: true,
+              options: {
+                select: {
+                  id: true,
+                  value: true,
+                },
+              },
+            },
+          },
+        },
       });
     }),
   getPublicForm: publicProcedure
@@ -91,33 +114,56 @@ export const formRouter = createTRPCRouter({
     }),
   updateForm: protectedProcedure
     .input(z.object({ formId: z.string().cuid(), formName: z.string().min(5) }))
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       // const userId = ctx.session?.user?.id;
       // TODO verify that user owns it
-      return ctx.prisma.form.update({
+      const updatedForm = await ctx.prisma.form.update({
         where: { id: input.formId },
         data: {
           name: input.formName,
         },
       });
+      return { id: updatedForm.id };
     }),
   updateFormVisibility: protectedProcedure
     .input(z.object({ formId: z.string().cuid(), public: z.boolean() }))
-    .mutation(({ ctx, input }) => {
-      // TODO verify that user owns it
-      return ctx.prisma.form.update({
-        where: { id: input.formId },
-        data: {
-          public: input.public,
-        },
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      const formToUpdate = await ctx.prisma.form.findFirst({
+        where: { id: input.formId, userId },
+      });
+
+      if (formToUpdate) {
+        const updatedForm = await ctx.prisma.form.update({
+          where: { id: input.formId },
+          data: {
+            public: input.public,
+          },
+        });
+        return { id: updatedForm.id };
+      }
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "you are not authorized to access",
       });
     }),
   deleteForm: protectedProcedure
     .input(z.object({ formId: z.string().cuid() }))
-    .mutation(({ ctx, input }) => {
-      // TODO verify that user owns it
-      return ctx.prisma.form.delete({
-        where: { id: input.formId },
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      const formToDelete = await ctx.prisma.form.findFirst({
+        where: { id: input.formId, userId },
+      });
+      if (formToDelete) {
+        const deletedForm = await ctx.prisma.form.delete({
+          where: { id: input.formId },
+        });
+        return { id: deletedForm.id };
+      }
+
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "you are not authorized to access",
       });
     }),
 });

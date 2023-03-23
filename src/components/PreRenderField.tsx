@@ -7,8 +7,6 @@ import { api } from "~/utils/api";
 type Option = {
   id: string;
   value: string;
-  fieldId: string;
-  userId: string;
 };
 
 type Field = {
@@ -17,8 +15,6 @@ type Field = {
   label: string;
   type: string;
   required: boolean;
-  formId: string;
-  userId: string;
   options: Array<Option>;
 };
 

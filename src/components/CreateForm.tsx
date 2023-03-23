@@ -2,7 +2,7 @@ import { z } from "zod";
 import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
-import { signOut } from "next-auth/react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { api } from "~/utils/api";
