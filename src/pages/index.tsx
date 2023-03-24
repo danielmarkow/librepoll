@@ -5,16 +5,16 @@ import FormSelector from "~/components/FormSelector";
 import Loading from "~/components/common/Loading";
 
 const Home: NextPage = () => {
-  const { data: sessionData, status: sessionStatus } = useSession();
+  const { status: sessionStatus } = useSession();
   return (
     <>
       <main>
-        {sessionData && sessionStatus === "authenticated" && (
+        {sessionStatus === "authenticated" && (
           <>
             <FormSelector />
           </>
         )}
-        {!sessionData && (
+        {sessionStatus === "unauthenticated" && (
           <>
             <div className="mx-auto flex h-screen max-w-2xl items-center text-center">
               <div className="w-full">
