@@ -1,4 +1,5 @@
-import { useContext, Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
+import { useContext } from "react";
 
 import { FormContext } from "~/context/FormContext";
 
@@ -12,5 +13,6 @@ type FormContextType = {
 } | null;
 
 export default function formHook() {
+  // eslint-disable-next-line
   return useContext<FormContextType>(FormContext);
 }

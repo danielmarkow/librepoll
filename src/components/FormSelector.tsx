@@ -34,7 +34,7 @@ export default function FormSelector() {
       },
     }
   );
-
+  // eslint-disable-next-line
   const getPublicFormDataQuery = api.formData.getFormData.useQuery(
     { formId: formIdToFetch },
     {
@@ -42,9 +42,10 @@ export default function FormSelector() {
       onSuccess: (data) => {
         console.log(data);
         const dataToConvert = {
-          data: data.map((d) => JSON.parse(d.submission)),
+          data: data.map((d) => JSON.parse(d.submission) as string),
           filename: "public_form_result",
           delimiter: ",",
+          // eslint-disable-next-line
           headers: Object.keys(JSON.parse(data[0]?.submission!)),
         };
         csvDownload(dataToConvert);
@@ -57,7 +58,7 @@ export default function FormSelector() {
   const updateFormVisibilityMutation =
     api.form.updateFormVisibility.useMutation({
       onSuccess: () => {
-        client.form.getAllForms.invalidate();
+        void client.form.getAllForms.invalidate();
       },
       onError: () => {
         toast.error("technical error setting form public");
@@ -66,7 +67,7 @@ export default function FormSelector() {
 
   const createFormMutation = api.form.createForm.useMutation({
     onSuccess: (data) => {
-      router.push({
+      void router.push({
         pathname: `/forms/${data.id}`,
         // query: { fromCreate: true },
       });
@@ -75,7 +76,7 @@ export default function FormSelector() {
 
   const deleteFormMutation = api.form.deleteForm.useMutation({
     onSuccess: () => {
-      client.form.getAllForms.invalidate();
+      void client.form.getAllForms.invalidate();
     },
     onError: () => {
       toast.error("technical error deleting the form");
@@ -124,7 +125,6 @@ export default function FormSelector() {
             </div>
           )}
 
-        {/* <Link href={`/forms/create-form`}> */}
         <div
           className="mt-2 w-1/3 cursor-pointer border-2 border-dashed border-gray-500 px-1 text-center hover:bg-gray-50 md:mt-1"
           onClick={() =>
@@ -133,7 +133,6 @@ export default function FormSelector() {
         >
           <span className="inline-flex items-center">create new form</span>
         </div>
-        {/* </Link> */}
         <p className="mt-1 text-lg">public</p>
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length > 0 &&
@@ -172,8 +171,6 @@ export default function FormSelector() {
             </div>
           )}
       </div>
-      {/* {getPublicFormDataQuery.isSuccess &&
-        JSON.stringify(getPublicFormDataQuery.data)} */}
     </div>
   );
 }

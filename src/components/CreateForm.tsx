@@ -16,12 +16,13 @@ import { useEffect } from "react";
 const formSchema = z.object({ formName: z.string().min(5) });
 
 export default function CreateForm() {
-  // TODO figure out a way so that typescript does not want the "!"
   const { currentFormId, setCurrentFormId, currentFieldId, editFormFlag } =
+    // eslint-disable-next-line
     formHook()!;
 
   useEffect(() => {
     setCurrentFormId("");
+    // eslint-disable-next-line
   }, []);
 
   const createFormMutation = api.form.createForm.useMutation({
@@ -40,13 +41,13 @@ export default function CreateForm() {
     register,
     reset: resetForm,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
 
   const onSubmit = (data: FieldValues) => {
-    createFormMutation.mutate({ name: data.formName });
+    createFormMutation.mutate({ name: data.formName as string });
   };
 
   return (

@@ -1,4 +1,8 @@
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import type {
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+} from "react-hook-form";
 
 type Option = {
   id: string;

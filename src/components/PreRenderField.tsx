@@ -19,13 +19,14 @@ type Field = {
 };
 
 export default function PreRenderField({ field }: { field: Field }) {
-  const { currentFieldId, setCurrentFieldId } = formHook()!;
+  // eslint-disable-next-line
+  const { setCurrentFieldId } = formHook()!;
 
   const client = api.useContext();
 
   const deleteFieldMutation = api.field.deleteField.useMutation({
     onSuccess: () => {
-      client.form.getForm.invalidate();
+      void client.form.getForm.invalidate();
     },
     onError: () => {
       toast.error("error deleting field");

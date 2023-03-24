@@ -1,11 +1,8 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
-import {
-  useForm,
-  useFieldArray,
-  FieldValues,
-  UseFormReset,
-} from "react-hook-form";
+import type { FieldValues, UseFormReset } from "react-hook-form";
+
+import { useForm, useFieldArray } from "react-hook-form";
 
 import Button from "./common/Button";
 import { api } from "~/utils/api";
@@ -33,7 +30,7 @@ export default function CreateOption({
     register,
     reset: optionFormReset,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     control,
   } = useForm();
 
@@ -48,7 +45,7 @@ export default function CreateOption({
       optionFormReset();
       fieldFormReset();
       setFieldId("");
-      utils.form.getForm.invalidate();
+      void utils.form.getForm.invalidate();
     },
     onError: () => {
       toast.error("error saving options");
@@ -66,16 +63,17 @@ export default function CreateOption({
   const onSubmit = (data: FieldValues) => {
     createOptionMutation.mutate({
       fieldId,
-      options: data.option,
+      options: data.option as Array<Option>,
     } as MutationData);
   };
 
   return (
     <>
-      {fieldId !== undefined && fieldId !== "" && (
+      {/* {fieldId !== undefined && fieldId !== "" && (
         <p>fieldid ready: {fieldId}</p>
-      )}
+      )} */}
       <p>create option</p>
+      {/* eslint-disable-next-line */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
           <div key={field.id}>

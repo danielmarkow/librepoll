@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import { FieldValues, useForm } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -44,7 +45,7 @@ export default function PublicForm() {
   const router = useRouter();
   const { formId } = router.query;
 
-  let schemaObj = {};
+  const schemaObj = {};
 
   const publicFormQuery = api.form.getPublicForm.useQuery(
     { formId: formId as string },
@@ -64,7 +65,7 @@ export default function PublicForm() {
 
   const createEntryMutation = api.formData.createEntry.useMutation({
     onSuccess: () => {
-      router.push("/public/forms/thankyou");
+      void router.push("/public/forms/thankyou");
     },
     onError: () => {
       toast.error("technical error submitting data");
@@ -85,24 +86,31 @@ export default function PublicForm() {
     });
   };
 
-  return (
-    <>
-      {publicFormQuery.isSuccess && (
-        <div>
-          <h1 className="text-xl">{publicFormQuery.data!.name}</h1>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            {publicFormQuery.data!.fields.map((f) => (
-              <RenderField
-                key={f.id}
-                field={f}
-                register={register}
-                errors={errors}
-              />
-            ))}
-            <Button type="submit">Submit</Button>
-          </form>
-        </div>
-      )}
-    </>
-  );
+  if (publicFormQuery.isLoading) return <p>loading</p>;
+  if (publicFormQuery.isError) return <p>an error occured</p>;
+
+  if (publicFormQuery.isSuccess && publicFormQuery.data)
+    return (
+      <>
+        {publicFormQuery.isSuccess && (
+          <div>
+            <h1 className="text-xl">{publicFormQuery.data.name}</h1>
+            {/* eslint-disable-next-line */}
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {publicFormQuery.data.fields.map((f) => (
+                <RenderField
+                  key={f.id}
+                  field={f}
+                  register={register}
+                  errors={errors}
+                />
+              ))}
+              <Button type="submit">Submit</Button>
+            </form>
+          </div>
+        )}
+      </>
+    );
+
+  return <></>;
 }

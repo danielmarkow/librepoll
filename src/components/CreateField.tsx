@@ -1,13 +1,13 @@
 import { useState } from "react";
 
 import { z } from "zod";
-import { FieldValues, useForm } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 
 import CreateOption from "./CreateOption";
-import Divider from "./common/Divider";
 import formHook from "~/hooks/formHook";
 import CreateFieldForm from "./common/CreateFieldForm";
 
@@ -19,6 +19,7 @@ const fieldSchema = z.object({
 });
 
 export default function CreateField() {
+  // eslint-disable-next-line
   const { currentFormId } = formHook()!;
 
   const [fieldId, setFieldId] = useState<string>("");
@@ -31,7 +32,7 @@ export default function CreateField() {
 
       if (data.type === "text" || data.type === "number") {
         fieldFormReset();
-        client.form.getForm.invalidate();
+        void client.form.getForm.invalidate();
         setFieldId("");
       }
     },
@@ -51,7 +52,7 @@ export default function CreateField() {
     register,
     reset: fieldFormReset,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     getValues,
     watch,
   } = useForm<FormValues>({
@@ -79,7 +80,6 @@ export default function CreateField() {
         watch={watch}
       />
       <br />
-      {/* <Divider /> */}
       {getValues("fieldType") === "select" && fieldId !== "" && (
         <CreateOption
           fieldId={fieldId}

@@ -26,6 +26,7 @@ export default function CreateFieldForm({
 }) {
   return (
     <>
+      {/* eslint-disable-next-line */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <label
           htmlFor="fieldType"

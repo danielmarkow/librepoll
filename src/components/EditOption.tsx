@@ -1,4 +1,5 @@
-import { useForm, useFieldArray, FieldValues } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 
 import { api } from "~/utils/api";
 import Button from "./common/Button";
@@ -6,12 +7,13 @@ import formHook from "~/hooks/formHook";
 import { toast } from "react-hot-toast";
 
 export default function EditOption() {
+  // eslint-disable-next-line
   const { currentFieldId } = formHook()!;
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     control,
   } = useForm();
 
@@ -21,6 +23,7 @@ export default function EditOption() {
       name: "option",
     });
 
+  // eslint-disable-next-line
   const getOptionsQuery = api.option.getOptions.useQuery(
     { fieldId: currentFieldId },
     {
@@ -37,7 +40,7 @@ export default function EditOption() {
 
   const updateOptionsMut = api.option.updateOptions.useMutation({
     onSuccess: () => {
-      client.form.getForm.invalidate();
+      void client.form.getForm.invalidate();
     },
     onError: () => {
       toast.error("error updating options");
@@ -51,10 +54,11 @@ export default function EditOption() {
   };
 
   const onSubmit = (data: FieldValues) => {
+    // eslint-disable-next-line
     const optionsToUpdate = data.option.filter((opt: Option) =>
       Object.keys(opt).includes("id")
-    );
-
+    ) as { id: string; value: string }[];
+    // eslint-disable-next-line
     const optionsToCreate = data.option.filter(
       (opt: Option) => !Object.keys(opt).includes("id")
     );
@@ -62,13 +66,14 @@ export default function EditOption() {
     updateOptionsMut.mutate({ options: optionsToUpdate });
     createOptionsMut.mutate({
       fieldId: currentFieldId,
-      options: optionsToCreate,
+      options: optionsToCreate as Option[],
     });
   };
 
   return (
     <>
       <p>edit option</p>
+      {/* eslint-disable-next-line */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
           <div key={field.id}>

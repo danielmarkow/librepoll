@@ -1,4 +1,5 @@
-import { FieldValues, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { FieldValues } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -11,16 +12,19 @@ import { toast } from "react-hot-toast";
 const formSchema = z.object({ formName: z.string().min(5) });
 
 export default function EditForm() {
+  // eslint-disable-next-line
   const { currentFormId, setEditFormFlag } = formHook()!;
 
   const client = api.useContext();
 
+  // eslint-disable-next-line
   const getOnlyFormQuery = api.form.getOnlyForm.useQuery(
     {
       formId: currentFormId,
     },
     {
       onSuccess: (data) => {
+        // eslint-disable-next-line
         setValue("formName", data!.name);
       },
       onError: () => {
@@ -31,7 +35,7 @@ export default function EditForm() {
 
   const updateFormMut = api.form.updateForm.useMutation({
     onSuccess: () => {
-      client.form.getForm.invalidate();
+      void client.form.getForm.invalidate();
     },
   });
 
@@ -42,7 +46,7 @@ export default function EditForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
     setValue,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -55,7 +59,7 @@ export default function EditForm() {
   const onSubmit = (data: FieldValues) => {
     updateFormMut.mutate({
       formId: currentFormId,
-      formName: data.formName,
+      formName: data.formName as string,
     } as FormValuesMutation);
   };
 
