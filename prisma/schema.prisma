@@ -26,6 +26,9 @@ model Form {
     userId         String
     public         Boolean          @default(false)
     publicFormData PublicFormData[]
+
+    @@unique([id, userId])
+    @@index([userId])
 }
 
 // Define the Field model

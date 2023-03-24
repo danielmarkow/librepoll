@@ -115,15 +115,26 @@ export const formRouter = createTRPCRouter({
   updateForm: protectedProcedure
     .input(z.object({ formId: z.string().cuid(), formName: z.string().min(5) }))
     .mutation(async ({ ctx, input }) => {
-      // const userId = ctx.session?.user?.id;
-      // TODO verify that user owns it
-      const updatedForm = await ctx.prisma.form.update({
-        where: { id: input.formId },
-        data: {
-          name: input.formName,
-        },
+      const userId = ctx.session?.user?.id;
+
+      const formToUpate = await ctx.prisma.form.findFirst({
+        where: { id: input.formId, userId },
       });
-      return { id: updatedForm.id };
+
+      if (formToUpate) {
+        const updatedForm = await ctx.prisma.form.update({
+          where: { id: input.formId },
+          data: {
+            name: input.formName,
+          },
+        });
+        return { id: updatedForm.id };
+      }
+
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "you are not authorized to access",
+      });
     }),
   updateFormVisibility: protectedProcedure
     .input(z.object({ formId: z.string().cuid(), public: z.boolean() }))
