@@ -4,6 +4,7 @@ import formHook from "~/hooks/formHook";
 import { api } from "~/utils/api";
 
 import PreRenderField from "./PreRenderField";
+import Loading from "./common/Loading";
 
 export default function PreRenderForm() {
   // eslint-disable-next-line
@@ -16,7 +17,7 @@ export default function PreRenderForm() {
     }
   );
 
-  if (isLoading) return <p>loading</p>;
+  if (isLoading) return <Loading />;
   if (isError) return <p>an error occured</p>;
 
   if (isSuccess && data)

@@ -8,6 +8,7 @@ import { api } from "~/utils/api";
 import RenderField from "~/components/RenderField";
 import Button from "~/components/common/Button";
 import { toast } from "react-hot-toast";
+import Loading from "~/components/common/Loading";
 
 const mapFieldTypeToZod = (fieldType: string, required: boolean) => {
   // TODO possibly expand to more validation options configured by the form creator
@@ -86,7 +87,7 @@ export default function PublicForm() {
     });
   };
 
-  if (publicFormQuery.isLoading) return <p>loading</p>;
+  if (publicFormQuery.isLoading) return <Loading />;
   if (publicFormQuery.isError) return <p>an error occured</p>;
 
   if (publicFormQuery.isSuccess && publicFormQuery.data)
