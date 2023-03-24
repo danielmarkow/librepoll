@@ -40,6 +40,8 @@ model Field {
     options  Option[]
     user     User     @relation(fields: [userId], references: [id])
     userId   String
+
+    @@index([formId])
 }
 
 // Define the Option model
@@ -50,6 +52,8 @@ model Option {
     fieldId String
     user    User   @relation(fields: [userId], references: [id])
     userId  String
+
+    @@index([fieldId])
 }
 
 // holds the form submissions as stringifyed JSON
@@ -62,6 +66,8 @@ model PublicFormData {
     formId          String
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt
+
+    @@index([formId])
 }
 
 // Necessary for Next auth
