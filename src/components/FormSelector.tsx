@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import {
   ArrowDownTrayIcon,
   EyeIcon,
+  ShareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import csvDownload from "json-to-csv-export";
@@ -95,7 +96,7 @@ export default function FormSelector() {
             <div key={f.id} className="mt-1 flex">
               <div
                 onClick={() => void router.push(`/forms/${f.id}`)}
-                className="border-gray-300px-1 ml-2 w-full border-2 border-dashed hover:bg-gray-50 md:ml-0 md:w-1/3"
+                className="border-gray-300px-1 ml-2 w-full cursor-pointer border-2 border-dashed hover:bg-gray-50 md:ml-0 md:w-1/3"
               >
                 <Link href={`/forms/${f.id}`} className="text-gray-600">
                   {f.name}
@@ -128,15 +129,6 @@ export default function FormSelector() {
               </span>
             </div>
           )}
-
-        {/* <div
-          className="mt-2 w-1/3 cursor-pointer border-2 border-dashed border-gray-500 px-1 text-center hover:bg-gray-50 md:mt-1"
-          onClick={() =>
-            void createFormMutation.mutate({ name: "my new form" })
-          }
-        >
-          <span className="inline-flex items-center">create new form</span>
-        </div> */}
         <div>
           <Button
             onClick={() =>
@@ -152,7 +144,10 @@ export default function FormSelector() {
           getAllPublicFormsQuery.data.length > 0 &&
           getAllPublicFormsQuery.data.map((f) => (
             <div key={f.id} className="mt-1 flex">
-              <div className="border-gray-300px-1 ml-2 w-full border-2 border-dashed hover:bg-gray-50 md:ml-0 md:w-1/3">
+              <div
+                onClick={() => void router.push(`/public/forms/${f.id}`)}
+                className="border-gray-300px-1 ml-2 w-full cursor-pointer border-2 border-dashed hover:bg-gray-50 md:ml-0 md:w-1/3"
+              >
                 <Link href={`/public/forms/${f.id}`} className="text-gray-600">
                   {f.name}
                 </Link>
@@ -165,6 +160,19 @@ export default function FormSelector() {
                       formId: f.id,
                       public: false,
                     })
+                  }
+                />
+                <ShareIcon
+                  className="mt-1 mr-1 h-5 w-5 cursor-pointer"
+                  onClick={() =>
+                    void navigator.clipboard
+                      .writeText(
+                        `${window.location.href.slice(0, -1)}/public/forms/${
+                          f.id
+                        }`
+                      )
+                      .then(() => toast.success("form url copied to clipboard"))
+                      .catch(() => toast.error("error copying to clipboard"))
                   }
                 />
                 <ArrowDownTrayIcon
