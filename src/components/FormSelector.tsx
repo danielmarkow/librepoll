@@ -10,6 +10,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 
 import { api } from "~/utils/api";
+import Button from "./common/Button";
 
 export default function FormSelector() {
   const [formIdToFetch, setFormIdToFetch] = useState<string>("");
@@ -92,12 +93,15 @@ export default function FormSelector() {
           getAllPrivateFormsQuery.data.length > 0 &&
           getAllPrivateFormsQuery.data.map((f) => (
             <div key={f.id} className="mt-1 flex">
-              <div className="w-1/3 border-2 border-dashed border-gray-300 px-1 hover:bg-gray-50">
+              <div
+                onClick={() => void router.push(`/forms/${f.id}`)}
+                className="border-gray-300px-1 ml-2 w-full border-2 border-dashed hover:bg-gray-50 md:ml-0 md:w-1/3"
+              >
                 <Link href={`/forms/${f.id}`} className="text-gray-600">
                   {f.name}
                 </Link>
               </div>
-              <div>
+              <div className="mr-2 md:mr-0">
                 <TrashIcon
                   className="h-5 w-5 cursor-pointer"
                   onClick={() =>
@@ -118,32 +122,42 @@ export default function FormSelector() {
           ))}
         {getAllPrivateFormsQuery.isSuccess &&
           getAllPrivateFormsQuery.data.length === 0 && (
-            <div className="mt-2 w-1/3 border-2 border-dashed border-gray-300 px-1 text-center md:mt-1">
+            <div className="mt-2 ml-2 mr-6 border-2 border-dashed border-gray-300 px-1 text-center md:ml-0 md:mr-0 md:w-1/3">
               <span className="inline-flex items-center text-gray-300">
                 no forms yet
               </span>
             </div>
           )}
 
-        <div
+        {/* <div
           className="mt-2 w-1/3 cursor-pointer border-2 border-dashed border-gray-500 px-1 text-center hover:bg-gray-50 md:mt-1"
           onClick={() =>
             void createFormMutation.mutate({ name: "my new form" })
           }
         >
           <span className="inline-flex items-center">create new form</span>
+        </div> */}
+        <div>
+          <Button
+            onClick={() =>
+              void createFormMutation.mutate({ name: "my new form" })
+            }
+            className="ml-2 md:ml-0"
+          >
+            create new form
+          </Button>
         </div>
         <p className="mt-1 text-lg">public</p>
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length > 0 &&
           getAllPublicFormsQuery.data.map((f) => (
             <div key={f.id} className="mt-1 flex">
-              <div className="w-1/3 border-2 border-dashed border-gray-300 px-1 hover:bg-gray-50">
+              <div className="border-gray-300px-1 ml-2 w-full border-2 border-dashed hover:bg-gray-50 md:ml-0 md:w-1/3">
                 <Link href={`/public/forms/${f.id}`} className="text-gray-600">
                   {f.name}
                 </Link>
               </div>
-              <div>
+              <div className="mr-2 md:mr-0">
                 <EyeIcon
                   className="h-5 w-5 cursor-pointer"
                   onClick={() =>
@@ -164,7 +178,7 @@ export default function FormSelector() {
           ))}
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length === 0 && (
-            <div className="mt-2 w-1/3 border-2 border-dashed border-gray-300 px-1 text-center md:mt-1">
+            <div className="mt-2 ml-2 mr-6 border-2 border-dashed border-gray-300 px-1 text-center md:ml-0 md:mr-0 md:w-1/3">
               <span className="inline-flex items-center text-gray-300">
                 none public - click on <EyeIcon className="ml-1 h-5 w-5" />
               </span>

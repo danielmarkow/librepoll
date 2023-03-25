@@ -65,7 +65,7 @@ model PublicFormData {
     id              String   @id @default(cuid())
     submission      String
     lastUpdatedForm DateTime
-    form            Form     @relation(fields: [formId], references: [id])
+    form            Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
     formId          String
     createdAt       DateTime @default(now())
     updatedAt       DateTime @updatedAt
