@@ -166,11 +166,7 @@ export default function FormSelector() {
                   className="mt-1 mr-1 h-5 w-5 cursor-pointer"
                   onClick={() =>
                     void navigator.clipboard
-                      .writeText(
-                        `${window.location.href.slice(0, -1)}/public/forms/${
-                          f.id
-                        }`
-                      )
+                      .writeText(`${window.location.href}public/forms/${f.id}`)
                       .then(() => toast.success("form url copied to clipboard"))
                       .catch(() => toast.error("error copying to clipboard"))
                   }

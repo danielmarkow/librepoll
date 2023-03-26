@@ -17,7 +17,7 @@ export default function EditOption() {
     control,
   } = useForm();
 
-  const { fields, append /*, prepend, remove, swap, move, insert*/ } =
+  const { fields, append, remove /*, prepend, swap, move, insert*/ } =
     useFieldArray({
       control,
       name: "option",
@@ -38,15 +38,14 @@ export default function EditOption() {
 
   const client = api.useContext();
 
-  const updateOptionsMut = api.option.updateOptions.useMutation({
+  const optionStateMut = api.option.updateOptionState.useMutation({
     onSuccess: () => {
       void client.form.getForm.invalidate();
     },
     onError: () => {
-      toast.error("error updating options");
+      toast.error("technical error updating options");
     },
   });
-  const createOptionsMut = api.option.createOption.useMutation();
 
   type Option = {
     id?: string;
@@ -54,20 +53,12 @@ export default function EditOption() {
   };
 
   const onSubmit = (data: FieldValues) => {
-    // eslint-disable-next-line
-    const optionsToUpdate = data.option.filter((opt: Option) =>
-      Object.keys(opt).includes("id")
-    ) as { id: string; value: string }[];
-    // eslint-disable-next-line
-    const optionsToCreate = data.option.filter(
-      (opt: Option) => !Object.keys(opt).includes("id")
-    );
-
-    updateOptionsMut.mutate({ options: optionsToUpdate });
-    createOptionsMut.mutate({
+    const dataToSubmit = {
+      options: data.option as Option[],
       fieldId: currentFieldId,
-      options: optionsToCreate as Option[],
-    });
+    };
+
+    optionStateMut.mutate(dataToSubmit);
   };
 
   return (
@@ -76,23 +67,40 @@ export default function EditOption() {
       {/* eslint-disable-next-line */}
       <form onSubmit={handleSubmit(onSubmit)}>
         {fields.map((field, index) => (
-          <div key={field.id}>
-            <label className="block text-sm font-medium leading-6 text-gray-900">
-              {`option ${index + 1}`}
-            </label>
+          <div key={field.id} className="flex items-center gap-1">
             <div>
-              <input
-                key={field.id} // important to include key with field's id
-                className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                {...register(`option.${index}.value`)}
-              />
+              <label className="block text-sm font-medium leading-6 text-gray-900">
+                {`option ${index + 1}`}
+              </label>
+              <div>
+                <input
+                  key={field.id} // important to include key with field's id
+                  className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  {...register(`option.${index}.value`)}
+                />
+              </div>
+            </div>
+            <div className="mt-2">
+              <Button
+                onClick={() => {
+                  remove(index);
+                }}
+              >
+                -
+              </Button>
             </div>
           </div>
         ))}
-        <Button type="button" onClick={() => void append({})}>
-          +
-        </Button>
-        <Button type="submit">save options</Button>
+        <div className="flex gap-1">
+          <div>
+            <Button type="button" onClick={() => void append({})}>
+              +
+            </Button>
+          </div>
+          <div>
+            <Button type="submit">save options</Button>
+          </div>
+        </div>
       </form>
     </>
   );
