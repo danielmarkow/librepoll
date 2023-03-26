@@ -63,7 +63,7 @@ model Option {
 // switch to json type when using mysql
 model PublicFormData {
     id              String   @id @default(cuid())
-    submission      String
+    submission      Json
     lastUpdatedForm DateTime
     form            Form     @relation(fields: [formId], references: [id], onDelete: Cascade)
     formId          String
