@@ -73,7 +73,6 @@ export default function EditField() {
   };
 
   const onSubmit = (data: FieldValues) => {
-    // console.log({ fieldId: currentFieldId, ...data });
     updateFieldMutation.mutate({
       fieldId: currentFieldId,
       ...data,

@@ -42,7 +42,6 @@ export default function FormSelector() {
     {
       enabled: formIdToFetch !== "",
       onSuccess: (data) => {
-        console.log(data);
         const dataToConvert = {
           data: data.map((d) => JSON.parse(d.submission) as string),
           filename: "public_form_result",

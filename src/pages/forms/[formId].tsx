@@ -1,6 +1,5 @@
 import { HomeIcon } from "@heroicons/react/24/outline";
 import { signIn, useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -16,7 +15,10 @@ export default function FormEdit() {
   const router = useRouter();
   const { formId } = router.query;
 
-  const { currentFormId, setCurrentFormId } =
+  const {
+    currentFormId,
+    setCurrentFormId /*, setEditFormFlag, editFormFlag */,
+  } =
     // eslint-disable-next-line
     formHook()!;
 
@@ -34,11 +36,15 @@ export default function FormEdit() {
 
   return (
     <>
-      <Link href={"/"}>
-        <Button>
-          <HomeIcon className="h-5 w-5" />
-        </Button>
-      </Link>
+      <Button
+        onClick={() => {
+          // setEditFormFlag(false);
+          // console.log("edit form flag", editFormFlag);
+          void router.push("/");
+        }}
+      >
+        <HomeIcon className="h-5 w-5" />
+      </Button>
 
       {sessionData &&
         checkIfPublic.isSuccess &&

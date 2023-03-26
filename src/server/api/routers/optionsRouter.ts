@@ -3,6 +3,29 @@ import { createTRPCRouter, protectedProcedure } from "../trpc";
 // import { TRPCError } from "@trpc/server";
 
 export const optionsRouter = createTRPCRouter({
+  createOption: protectedProcedure
+    .input(
+      z.object({
+        fieldId: z.string().cuid(),
+        options: z.array(z.object({ value: z.string() })),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const userId = ctx.session?.user?.id;
+      console.log("input: ", input.options);
+
+      const optionsToCreate = input.options.map((opt) => {
+        return ctx.prisma.option.create({
+          data: {
+            value: opt.value,
+            user: { connect: { id: userId } },
+            field: { connect: { id: input.fieldId } },
+          },
+        });
+      });
+
+      return ctx.prisma.$transaction(optionsToCreate);
+    }),
   getOptions: protectedProcedure
     .input(z.object({ fieldId: z.string().cuid() }))
     .query(({ ctx, input }) => {
