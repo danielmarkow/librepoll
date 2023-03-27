@@ -15,10 +15,7 @@ export default function FormEdit() {
   const router = useRouter();
   const { formId } = router.query;
 
-  const {
-    currentFormId,
-    setCurrentFormId /*, setEditFormFlag, editFormFlag */,
-  } =
+  const { currentFormId, setCurrentFormId, setCurrentFieldId } =
     // eslint-disable-next-line
     formHook()!;
 
@@ -38,8 +35,8 @@ export default function FormEdit() {
     <>
       <Button
         onClick={() => {
-          // setEditFormFlag(false);
-          // console.log("edit form flag", editFormFlag);
+          // so that the previously edited field doesn't remain open
+          setCurrentFieldId("");
           void router.push("/");
         }}
       >
