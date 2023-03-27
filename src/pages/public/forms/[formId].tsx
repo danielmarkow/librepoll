@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import Link from "next/link";
 import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -94,7 +95,7 @@ export default function PublicForm() {
     return (
       <>
         {publicFormQuery.isSuccess && (
-          <div>
+          <div className="ml-5 md:ml-0">
             <h1 className="text-xl">{publicFormQuery.data.name}</h1>
             {/* eslint-disable-next-line */}
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -108,6 +109,9 @@ export default function PublicForm() {
               ))}
               <Button type="submit">Submit</Button>
             </form>
+            <Link href="/">
+              <p className="mt-5 text-sm text-gray-300">powered by librepoll</p>
+            </Link>
           </div>
         )}
       </>
