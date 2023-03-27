@@ -69,7 +69,6 @@ export default function EditForm() {
   };
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
     updateFormMut.mutate({
       formId: currentFormId,
       formName: data.formName as string,
