@@ -9,7 +9,10 @@ import CreateFormForm from "./common/CreateFormForm";
 import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 
-const formSchema = z.object({ formName: z.string().min(5) });
+const formSchema = z.object({
+  formName: z.string().min(5),
+  formDescription: z.string().max(191).optional(),
+});
 
 export default function EditForm() {
   // eslint-disable-next-line
@@ -26,6 +29,11 @@ export default function EditForm() {
       onSuccess: (data) => {
         // eslint-disable-next-line
         setValue("formName", data!.name);
+        // eslint-disable-next-line
+        if (data!.description !== null) {
+          // eslint-disable-next-line
+          setValue("formDescription", data!.description);
+        }
       },
       onError: () => {
         toast.error("error requesting form data");
@@ -37,16 +45,20 @@ export default function EditForm() {
     onSuccess: () => {
       void client.form.getForm.invalidate();
     },
+    onError: () => {
+      toast.error("technical error updating form");
+    },
   });
 
   type FormValues = {
     formName: string;
+    formDescription: string;
   };
 
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
     setValue,
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -57,9 +69,11 @@ export default function EditForm() {
   };
 
   const onSubmit = (data: FieldValues) => {
+    console.log(data);
     updateFormMut.mutate({
       formId: currentFormId,
       formName: data.formName as string,
+      formDescription: data.formDescription as string,
     } as FormValuesMutation);
   };
 
@@ -70,6 +84,7 @@ export default function EditForm() {
         register={register}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
+        errors={errors}
       />
       <Button onClick={() => void setEditFormFlag(false)}>Done</Button>
     </>

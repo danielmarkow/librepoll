@@ -29,6 +29,7 @@ export default function PreRenderForm() {
             <div className="flex gap-2">
               <div className="border-1 mt-2 w-2/3 border border-dotted border-gray-300 p-1">
                 <h1 className="ml-1 text-xl">{data.name}</h1>
+                <p className="ml-1 text-gray-500">{data.description}</p>
               </div>
               <div>
                 <PencilSquareIcon

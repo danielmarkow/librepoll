@@ -12,7 +12,10 @@ import EditField from "./EditField";
 import EditForm from "./EditForm";
 import CreateFormForm from "./common/CreateFormForm";
 
-const formSchema = z.object({ formName: z.string().min(5) });
+const formSchema = z.object({
+  formName: z.string().min(5),
+  formDescription: z.string().max(191).optional(),
+});
 
 export default function CreateForm() {
   const { currentFormId, setCurrentFormId, currentFieldId, editFormFlag } =
@@ -31,13 +34,14 @@ export default function CreateForm() {
 
   type FormValues = {
     formName: string;
+    formDescription: string;
   };
 
   const {
     register,
     reset: resetForm,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
   });
@@ -55,6 +59,7 @@ export default function CreateForm() {
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
             register={register}
+            errors={errors}
           />
         </>
       )}

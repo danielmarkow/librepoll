@@ -41,6 +41,7 @@ export const formRouter = createTRPCRouter({
         select: {
           id: true,
           name: true,
+          description: true,
           createdAt: true,
           updatedAt: true,
           fields: {
@@ -69,6 +70,7 @@ export const formRouter = createTRPCRouter({
         select: {
           id: true,
           name: true,
+          description: true,
           updatedAt: true,
           fields: {
             select: {
@@ -97,6 +99,7 @@ export const formRouter = createTRPCRouter({
         select: {
           id: true,
           name: true,
+          description: true,
         },
       });
     }),
@@ -109,11 +112,18 @@ export const formRouter = createTRPCRouter({
         where: { AND: [{ id: input.formId }, { userId }] },
         select: {
           name: true,
+          description: true,
         },
       });
     }),
   updateForm: protectedProcedure
-    .input(z.object({ formId: z.string().cuid(), formName: z.string().min(5) }))
+    .input(
+      z.object({
+        formId: z.string().cuid(),
+        formName: z.string().min(5),
+        formDescription: z.string().optional(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
 
@@ -126,6 +136,7 @@ export const formRouter = createTRPCRouter({
           where: { id: input.formId },
           data: {
             name: input.formName,
+            description: input.formDescription,
           },
         });
         return { id: updatedForm.id };

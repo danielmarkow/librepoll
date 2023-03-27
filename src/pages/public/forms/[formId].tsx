@@ -97,6 +97,7 @@ export default function PublicForm() {
         {publicFormQuery.isSuccess && (
           <div className="ml-5 md:ml-0">
             <h1 className="text-xl">{publicFormQuery.data.name}</h1>
+            <p className="text-gray-500">{publicFormQuery.data.description}</p>
             {/* eslint-disable-next-line */}
             <form onSubmit={handleSubmit(onSubmit)}>
               {publicFormQuery.data.fields.map((f) => (
