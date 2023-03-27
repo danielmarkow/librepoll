@@ -35,10 +35,8 @@ const Home: NextPage = () => {
           </>
         )}{" "}
         {sessionStatus === "loading" && (
-          <div className="mx-auto flex h-screen max-w-2xl items-center text-center">
-            <div className="w-full">
-              <Loading />
-            </div>
+          <div className="flex min-h-screen flex-col items-center justify-center">
+            <Loading />
           </div>
         )}
       </main>
