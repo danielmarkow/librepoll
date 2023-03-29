@@ -15,8 +15,7 @@ const formSchema = z.object({
 });
 
 export default function EditForm() {
-  // eslint-disable-next-line
-  const { currentFormId, setEditFormFlag } = formHook()!;
+  const { currentFormId, setEditFormFlag } = formHook();
 
   const client = api.useContext();
 

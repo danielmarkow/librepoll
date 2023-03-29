@@ -15,9 +15,7 @@ export default function FormEdit() {
   const router = useRouter();
   const { formId } = router.query;
 
-  const { currentFormId, setCurrentFormId, setCurrentFieldId } =
-    // eslint-disable-next-line
-    formHook()!;
+  const { currentFormId, setCurrentFormId, setCurrentFieldId } = formHook();
 
   const checkIfPublic = api.form.checkIfPublic.useQuery(
     { formId: formId as string },

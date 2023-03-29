@@ -8,8 +8,21 @@ type ContextType = {
   setCurrentFieldId: Dispatch<SetStateAction<string>>;
   editFormFlag: boolean;
   setEditFormFlag: Dispatch<SetStateAction<boolean>>;
-} | null;
+};
 
-const FormContext = createContext<ContextType>(null);
+const FormContext = createContext<ContextType>({
+  currentFormId: "",
+  setCurrentFormId: () => {
+    ("");
+  },
+  currentFieldId: "",
+  setCurrentFieldId: () => {
+    ("");
+  },
+  editFormFlag: false,
+  setEditFormFlag: () => {
+    ("");
+  },
+});
 
 export { FormContext };

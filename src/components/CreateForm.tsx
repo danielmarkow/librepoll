@@ -19,8 +19,7 @@ const formSchema = z.object({
 
 export default function CreateForm() {
   const { currentFormId, setCurrentFormId, currentFieldId, editFormFlag } =
-    // eslint-disable-next-line
-    formHook()!;
+    formHook();
 
   setCurrentFormId("");
 

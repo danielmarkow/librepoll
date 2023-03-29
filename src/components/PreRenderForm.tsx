@@ -7,8 +7,7 @@ import PreRenderField from "./PreRenderField";
 import Loading from "./common/Loading";
 
 export default function PreRenderForm() {
-  // eslint-disable-next-line
-  const { currentFormId, setEditFormFlag } = formHook()!;
+  const { currentFormId, setEditFormFlag } = formHook();
 
   const { data, isSuccess, isLoading, isError } = api.form.getForm.useQuery(
     { formId: currentFormId },

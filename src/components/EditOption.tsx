@@ -7,8 +7,7 @@ import formHook from "~/hooks/formHook";
 import { toast } from "react-hot-toast";
 
 export default function EditOption() {
-  // eslint-disable-next-line
-  const { currentFieldId } = formHook()!;
+  const { currentFieldId } = formHook();
 
   const {
     register,

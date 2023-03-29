@@ -19,8 +19,7 @@ const fieldSchema = z.object({
 });
 
 export default function CreateField() {
-  // eslint-disable-next-line
-  const { currentFormId } = formHook()!;
+  const { currentFormId } = formHook();
 
   const [fieldId, setFieldId] = useState<string>("");
 

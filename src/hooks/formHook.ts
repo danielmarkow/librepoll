@@ -10,7 +10,7 @@ type FormContextType = {
   setCurrentFieldId: Dispatch<SetStateAction<string>>;
   editFormFlag: boolean;
   setEditFormFlag: Dispatch<SetStateAction<boolean>>;
-} | null;
+};
 
 export default function formHook() {
   // eslint-disable-next-line

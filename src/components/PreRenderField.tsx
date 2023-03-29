@@ -19,8 +19,7 @@ type Field = {
 };
 
 export default function PreRenderField({ field }: { field: Field }) {
-  // eslint-disable-next-line
-  const { setCurrentFieldId } = formHook()!;
+  const { setCurrentFieldId } = formHook();
 
   const client = api.useContext();
 
