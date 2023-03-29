@@ -24,8 +24,7 @@ type FormValues = {
 };
 
 export default function EditField() {
-  // eslint-disable-next-line
-  const { currentFieldId, setCurrentFieldId } = formHook()!;
+  const { currentFieldId, setCurrentFieldId } = formHook();
 
   const {
     register,
