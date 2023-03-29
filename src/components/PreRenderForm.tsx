@@ -22,6 +22,7 @@ export default function PreRenderForm() {
   if (isSuccess && data)
     return (
       <>
+        {JSON.stringify(data)}
         <p className="mt-1 text-lg">form preview</p>
         {isSuccess && (
           <>

@@ -2,12 +2,14 @@ import type { FieldValues } from "react-hook-form";
 import { useForm, useFieldArray } from "react-hook-form";
 
 import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
+
 import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import { toast } from "react-hot-toast";
 
 export default function EditOption() {
-  const { currentFieldId } = formHook();
+  const { currentFieldId, currentFormId } = formHook();
 
   const {
     register,
@@ -36,10 +38,26 @@ export default function EditOption() {
   );
 
   const client = api.useContext();
-
+  type FormData = RouterOutputs["form"]["getForm"];
   const optionStateMut = api.option.updateOptionState.useMutation({
-    onSuccess: () => {
-      void client.form.getForm.invalidate();
+    onSuccess: (data) => {
+      client.form.getForm.setData({ formId: currentFormId }, (oldData) => {
+        const newData = {
+          ...oldData,
+          // eslint-disable-next-line
+          fields: oldData!.fields.map((field) => {
+            if (field.id === currentFieldId) {
+              return {
+                ...field,
+                options: data,
+              };
+            }
+            return field;
+          }),
+        };
+
+        return newData as FormData;
+      });
     },
     onError: () => {
       toast.error("technical error updating options");

@@ -35,9 +35,9 @@ export const optionsRouter = createTRPCRouter({
       const optionsToDelete = currentOptionState.map((opt) => {
         return ctx.prisma.option.delete({
           where: { id: opt.id },
-          select: {
-            id: true,
-          },
+          // select: {
+          //   id: true,
+          // },
         });
       });
 
@@ -50,13 +50,14 @@ export const optionsRouter = createTRPCRouter({
           },
           select: {
             id: true,
+            value: true,
           },
         });
       });
 
-      const deletedOptions = await ctx.prisma.$transaction(optionsToDelete);
+      await ctx.prisma.$transaction(optionsToDelete);
       const createdOptions = await ctx.prisma.$transaction(optionsToCreate);
 
-      return { created: createdOptions, deleted: deletedOptions };
+      return createdOptions;
     }),
 });
