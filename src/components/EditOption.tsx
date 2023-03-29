@@ -38,7 +38,9 @@ export default function EditOption() {
   );
 
   const client = api.useContext();
+
   type FormData = RouterOutputs["form"]["getForm"];
+
   const optionStateMut = api.option.updateOptionState.useMutation({
     onSuccess: (data) => {
       client.form.getForm.setData({ formId: currentFormId }, (oldData) => {
