@@ -6,7 +6,7 @@ import { z } from "zod";
 import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import CreateFormForm from "./common/CreateFormForm";
-import { api } from "~/utils/api";
+import { RouterOutputs, api } from "~/utils/api";
 import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
@@ -39,10 +39,17 @@ export default function EditForm() {
       },
     }
   );
+  type FormData = RouterOutputs["form"]["getForm"];
 
   const updateFormMut = api.form.updateForm.useMutation({
-    onSuccess: () => {
-      void client.form.getForm.invalidate();
+    onSuccess: (data) => {
+      client.form.getForm.setData({ formId: currentFormId }, (oldData) => {
+        return {
+          ...oldData,
+          name: data.name,
+          description: data.description,
+        } as FormData;
+      });
     },
     onError: () => {
       toast.error("technical error updating form");

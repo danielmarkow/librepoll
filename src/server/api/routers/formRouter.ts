@@ -138,8 +138,13 @@ export const formRouter = createTRPCRouter({
             name: input.formName,
             description: input.formDescription,
           },
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
         });
-        return { id: updatedForm.id };
+        return updatedForm;
       }
 
       throw new TRPCError({
