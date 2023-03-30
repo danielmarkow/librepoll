@@ -72,8 +72,22 @@ export default function CreateOption({
   return (
     <>
       <p>create option</p>
-      {/* eslint-disable-next-line */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        // eslint-disable-next-line
+        onSubmit={handleSubmit(onSubmit)}
+        onPaste={(e) => {
+          e.preventDefault();
+          const pastedOptions = e.clipboardData.getData("text").split("\n");
+          pastedOptions.forEach((opt) => {
+            append({ value: opt });
+          });
+        }}
+      >
+        {fields.length === 0 && (
+          <p className="mt-0 text-sm text-gray-500">
+            click here and paste your options
+          </p>
+        )}
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-center gap-1">
             <div>
