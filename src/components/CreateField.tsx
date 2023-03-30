@@ -4,8 +4,10 @@ import { z } from "zod";
 import type { FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { api } from "~/utils/api";
 import { toast } from "react-hot-toast";
+
+import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 
 import CreateOption from "./CreateOption";
 import formHook from "~/hooks/formHook";
@@ -24,6 +26,7 @@ export default function CreateField() {
   const [fieldId, setFieldId] = useState<string>("");
 
   const client = api.useContext();
+  type FormData = RouterOutputs["form"]["getForm"];
 
   const createFieldMutation = api.field.createField.useMutation({
     onSuccess: (data) => {
@@ -31,7 +34,10 @@ export default function CreateField() {
 
       if (data.type === "text" || data.type === "number") {
         fieldFormReset();
-        void client.form.getForm.invalidate();
+        client.form.getForm.setData({ formId: currentFormId }, (oldData) => {
+          // eslint-disable-next-line
+          return { ...oldData, fields: [...oldData!.fields, data] } as FormData;
+        });
         setFieldId("");
       }
     },
