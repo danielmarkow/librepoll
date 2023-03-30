@@ -6,7 +6,8 @@ import { z } from "zod";
 import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import CreateFormForm from "./common/CreateFormForm";
-import { RouterOutputs, api } from "~/utils/api";
+import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
