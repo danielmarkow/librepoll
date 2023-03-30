@@ -45,6 +45,8 @@ export default function CreateOption({
       optionFormReset();
       fieldFormReset();
       setFieldId("");
+      // leaving invalidation here because the field data
+      // is not yet displayed
       void client.form.getForm.invalidate();
     },
     onError: () => {

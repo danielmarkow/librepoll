@@ -1,8 +1,9 @@
 import { PencilSquareIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-hot-toast";
 
-import formHook from "~/hooks/formHook";
 import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
+import formHook from "~/hooks/formHook";
 
 type Option = {
   id: string;
@@ -19,13 +20,20 @@ type Field = {
 };
 
 export default function PreRenderField({ field }: { field: Field }) {
-  const { setCurrentFieldId } = formHook();
+  const { setCurrentFieldId, currentFormId } = formHook();
 
   const client = api.useContext();
 
+  type FormData = RouterOutputs["form"]["getForm"];
+
   const deleteFieldMutation = api.field.deleteField.useMutation({
-    onSuccess: () => {
-      void client.form.getForm.invalidate();
+    onSuccess: (data) => {
+      client.form.getForm.setData({ formId: currentFormId }, (oldData) => {
+        return {
+          ...oldData,
+          fields: oldData?.fields.filter((field) => field.id !== data.id),
+        } as FormData;
+      });
     },
     onError: () => {
       toast.error("error deleting field");

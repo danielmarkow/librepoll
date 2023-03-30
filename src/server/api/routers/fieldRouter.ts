@@ -63,6 +63,13 @@ export const fieldRouter = createTRPCRouter({
       // const userId = ctx.session?.user?.id;
       return ctx.prisma.field.delete({
         where: { id: input.fieldId },
+        select: {
+          id: true,
+          name: true,
+          label: true,
+          type: true,
+          required: true,
+        },
       });
     }),
   getField: protectedProcedure
