@@ -4,10 +4,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { api } from "~/utils/api";
+import type { RouterOutputs } from "~/utils/api";
 import Button from "./common/Button";
 import formHook from "~/hooks/formHook";
 import CreateFieldForm from "./common/CreateFieldForm";
 import EditOption from "./EditOption";
+import { toast } from "react-hot-toast";
 
 const fieldSchema = z.object({
   fieldName: z.string(),
@@ -24,7 +26,7 @@ type FormValues = {
 };
 
 export default function EditField() {
-  const { currentFieldId, setCurrentFieldId } = formHook();
+  const { currentFieldId, setCurrentFieldId, currentFormId } = formHook();
 
   const {
     register,
@@ -61,9 +63,30 @@ export default function EditField() {
 
   const client = api.useContext();
 
+  type FormData = RouterOutputs["form"]["getForm"];
+
   const updateFieldMutation = api.field.updateField.useMutation({
-    onSuccess: () => {
-      void client.form.getForm.invalidate();
+    onSuccess: (data) => {
+      client.form.getForm.setData({ formId: currentFormId }, (oldData) => {
+        return {
+          ...oldData,
+          fields: oldData?.fields.map((field) => {
+            if (field.id === currentFieldId) {
+              return {
+                ...field,
+                name: data.name,
+                label: data.label,
+                type: data.type,
+                required: data.required,
+              };
+            }
+            return field;
+          }),
+        } as FormData;
+      });
+    },
+    onError: () => {
+      toast.error("technical error saving field data");
     },
   });
 
