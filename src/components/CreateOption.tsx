@@ -36,14 +36,13 @@ export default function CreateOption({
     reset: optionFormReset,
     handleSubmit,
     setFocus,
-    // getFieldState,
     getValues,
     setValue,
     // formState: { errors },
     control,
   } = useForm();
 
-  const { fields, append, remove, insert /*, prepend, swap, move, */ } =
+  const { fields, append, remove, insert /*prepend, swap, move, */ } =
     useFieldArray({
       control,
       name: "option",
@@ -95,14 +94,24 @@ export default function CreateOption({
           e.preventDefault();
           const pastedOptions = e.clipboardData.getData("text").split("\n");
 
+          let startFieldIdx = focusedFieldIdx;
+
           for (let i = 0; i < pastedOptions.length; i++) {
             if (
-              getValues(`option.${focusedFieldIdx}.value`) !== undefined &&
-              getValues(`option.${focusedFieldIdx}.value`) === ""
+              getValues(`option.${startFieldIdx}.value`) !== undefined &&
+              getValues(`option.${startFieldIdx}.value`) === ""
             ) {
-              setValue(`option.${focusedFieldIdx}.value`, pastedOptions[i]);
+              setValue(`option.${startFieldIdx}.value`, pastedOptions[i]);
+              startFieldIdx += 1;
+            } else if (
+              getValues(`option.${startFieldIdx}.value`) !== undefined &&
+              getValues(`option.${startFieldIdx}.value`) !== ""
+            ) {
+              insert(startFieldIdx, { value: pastedOptions[i] });
+              startFieldIdx += 1;
             } else {
               append({ value: pastedOptions[i] });
+              startFieldIdx += 1;
             }
           }
         }}
@@ -120,7 +129,6 @@ export default function CreateOption({
               </label>
               <div>
                 <input
-                  autoFocus
                   onFocus={() => setFocusedFieldIdx(index)}
                   key={field.id} // important to include key with field's id
                   className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
