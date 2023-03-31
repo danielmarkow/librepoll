@@ -36,7 +36,7 @@ export default function CreateOption({
     control,
   } = useForm();
 
-  const { fields, append, remove /*, prepend, swap, move, insert*/ } =
+  const { fields, append, remove, insert /*, prepend, swap, move, */ } =
     useFieldArray({
       control,
       name: "option",
@@ -87,19 +87,22 @@ export default function CreateOption({
         onPaste={(e) => {
           e.preventDefault();
           const pastedOptions = e.clipboardData.getData("text").split("\n");
-          const focusedField = getFieldState("option.0.value").isTouched;
 
-          console.log(focusedField);
+          let focusedFieldIdx = 0;
+          for (let i = 0; i < fields.length; i++) {
+            if (getFieldState(`option.${i}.value`).isTouched)
+              focusedFieldIdx = i;
+          }
+
           for (let i = 0; i < pastedOptions.length; i++) {
-            if (focusedField !== undefined && i === 0) {
-              setValue("option.0.value", pastedOptions[i]);
+            if (i === 0) {
+              setValue(`option.${focusedFieldIdx}.value`, pastedOptions[i]);
+              focusedFieldIdx += 1;
             } else {
-              append({ value: pastedOptions[i] });
+              insert(focusedFieldIdx, { value: pastedOptions[i] });
+              focusedFieldIdx += 1;
             }
           }
-          // pastedOptions.forEach((opt) => {
-          //   append({ value: opt });
-          // });
         }}
       >
         {fields.length === 0 && (
