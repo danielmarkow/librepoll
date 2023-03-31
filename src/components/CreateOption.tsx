@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import { useEffect } from "react";
 
 import type { FieldValues, UseFormReset } from "react-hook-form";
 
@@ -28,6 +29,9 @@ export default function CreateOption({
     register,
     reset: optionFormReset,
     handleSubmit,
+    setFocus,
+    getFieldState,
+    setValue,
     // formState: { errors },
     control,
   } = useForm();
@@ -37,6 +41,11 @@ export default function CreateOption({
       control,
       name: "option",
     });
+
+  useEffect(() => {
+    append({});
+    setFocus("option.0.value");
+  }, [append, setFocus]);
 
   const client = api.useContext();
 
@@ -78,9 +87,19 @@ export default function CreateOption({
         onPaste={(e) => {
           e.preventDefault();
           const pastedOptions = e.clipboardData.getData("text").split("\n");
-          pastedOptions.forEach((opt) => {
-            append({ value: opt });
-          });
+          const focusedField = getFieldState("option.0.value").isTouched;
+
+          console.log(focusedField);
+          for (let i = 0; i < pastedOptions.length; i++) {
+            if (focusedField !== undefined && i === 0) {
+              setValue("option.0.value", pastedOptions[i]);
+            } else {
+              append({ value: pastedOptions[i] });
+            }
+          }
+          // pastedOptions.forEach((opt) => {
+          //   append({ value: opt });
+          // });
         }}
       >
         {fields.length === 0 && (
