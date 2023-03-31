@@ -27,10 +27,6 @@ export default function CreateOption({
 }) {
   const [focusedFieldIdx, setFocusedFieldIdx] = useState<number>(0);
 
-  useEffect(() => {
-    console.log(focusedFieldIdx);
-  }, [focusedFieldIdx]);
-
   const {
     register,
     reset: optionFormReset,
