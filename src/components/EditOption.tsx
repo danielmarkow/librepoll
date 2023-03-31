@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import type { FieldValues } from "react-hook-form";
 import { useForm, useFieldArray } from "react-hook-form";
 
@@ -9,16 +11,20 @@ import formHook from "~/hooks/formHook";
 import { toast } from "react-hot-toast";
 
 export default function EditOption() {
+  const [focusedFieldIdx, setFocusedFieldIdx] = useState<number>(0);
+
   const { currentFieldId, currentFormId } = formHook();
 
   const {
     register,
     handleSubmit,
     // formState: { errors },
+    getValues,
+    setValue,
     control,
   } = useForm();
 
-  const { fields, append, remove /*, prepend, swap, move, insert*/ } =
+  const { fields, append, remove, insert /*, prepend, swap, move*/ } =
     useFieldArray({
       control,
       name: "option",
@@ -83,8 +89,35 @@ export default function EditOption() {
   return (
     <>
       <p>edit option</p>
-      {/* eslint-disable-next-line */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        // eslint-disable-next-line
+        onSubmit={handleSubmit(onSubmit)}
+        onPaste={(e) => {
+          e.preventDefault();
+          const pastedOptions = e.clipboardData.getData("text").split("\n");
+
+          let startFieldIdx = focusedFieldIdx;
+
+          for (let i = 0; i < pastedOptions.length; i++) {
+            if (
+              getValues(`option.${startFieldIdx}.value`) !== undefined &&
+              getValues(`option.${startFieldIdx}.value`) === ""
+            ) {
+              setValue(`option.${startFieldIdx}.value`, pastedOptions[i]);
+              startFieldIdx += 1;
+            } else if (
+              getValues(`option.${startFieldIdx}.value`) !== undefined &&
+              getValues(`option.${startFieldIdx}.value`) !== ""
+            ) {
+              insert(startFieldIdx, { value: pastedOptions[i] });
+              startFieldIdx += 1;
+            } else {
+              append({ value: pastedOptions[i] });
+              startFieldIdx += 1;
+            }
+          }
+        }}
+      >
         {fields.map((field, index) => (
           <div key={field.id} className="flex items-center gap-1">
             <div>
@@ -93,6 +126,7 @@ export default function EditOption() {
               </label>
               <div>
                 <input
+                  onFocus={() => setFocusedFieldIdx(index)}
                   key={field.id} // important to include key with field's id
                   className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register(`option.${index}.value`)}

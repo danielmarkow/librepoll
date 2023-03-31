@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 
 import type { FieldValues, UseFormReset } from "react-hook-form";
 
@@ -24,19 +25,29 @@ export default function CreateOption({
   fieldFormReset: UseFormReset<FormValuesField>;
   setFieldId: Dispatch<SetStateAction<string>>;
 }) {
+  const [focusedFieldIdx, setFocusedFieldIdx] = useState<number>(0);
+
   const {
     register,
     reset: optionFormReset,
     handleSubmit,
+    setFocus,
+    getValues,
+    setValue,
     // formState: { errors },
     control,
   } = useForm();
 
-  const { fields, append, remove /*, prepend, swap, move, insert*/ } =
+  const { fields, append, remove, insert /*prepend, swap, move, */ } =
     useFieldArray({
       control,
       name: "option",
     });
+
+  useEffect(() => {
+    append({});
+    setFocus("option.0.value");
+  }, [append, setFocus]);
 
   const client = api.useContext();
 
@@ -78,9 +89,27 @@ export default function CreateOption({
         onPaste={(e) => {
           e.preventDefault();
           const pastedOptions = e.clipboardData.getData("text").split("\n");
-          pastedOptions.forEach((opt) => {
-            append({ value: opt });
-          });
+
+          let startFieldIdx = focusedFieldIdx;
+
+          for (let i = 0; i < pastedOptions.length; i++) {
+            if (
+              getValues(`option.${startFieldIdx}.value`) !== undefined &&
+              getValues(`option.${startFieldIdx}.value`) === ""
+            ) {
+              setValue(`option.${startFieldIdx}.value`, pastedOptions[i]);
+              startFieldIdx += 1;
+            } else if (
+              getValues(`option.${startFieldIdx}.value`) !== undefined &&
+              getValues(`option.${startFieldIdx}.value`) !== ""
+            ) {
+              insert(startFieldIdx, { value: pastedOptions[i] });
+              startFieldIdx += 1;
+            } else {
+              append({ value: pastedOptions[i] });
+              startFieldIdx += 1;
+            }
+          }
         }}
       >
         {fields.length === 0 && (
@@ -96,6 +125,7 @@ export default function CreateOption({
               </label>
               <div>
                 <input
+                  onFocus={() => setFocusedFieldIdx(index)}
                   key={field.id} // important to include key with field's id
                   className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register(`option.${index}.value`)}
