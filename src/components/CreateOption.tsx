@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import type { FieldValues, UseFormReset } from "react-hook-form";
 
@@ -25,12 +25,19 @@ export default function CreateOption({
   fieldFormReset: UseFormReset<FormValuesField>;
   setFieldId: Dispatch<SetStateAction<string>>;
 }) {
+  const [focusedFieldIdx, setFocusedFieldIdx] = useState<number>(0);
+
+  useEffect(() => {
+    console.log(focusedFieldIdx);
+  }, [focusedFieldIdx]);
+
   const {
     register,
     reset: optionFormReset,
     handleSubmit,
     setFocus,
-    getFieldState,
+    // getFieldState,
+    getValues,
     setValue,
     // formState: { errors },
     control,
@@ -88,19 +95,14 @@ export default function CreateOption({
           e.preventDefault();
           const pastedOptions = e.clipboardData.getData("text").split("\n");
 
-          let focusedFieldIdx = 0;
-          for (let i = 0; i < fields.length; i++) {
-            if (getFieldState(`option.${i}.value`).isTouched)
-              focusedFieldIdx = i;
-          }
-
           for (let i = 0; i < pastedOptions.length; i++) {
-            if (i === 0) {
+            if (
+              getValues(`option.${focusedFieldIdx}.value`) !== undefined &&
+              getValues(`option.${focusedFieldIdx}.value`) === ""
+            ) {
               setValue(`option.${focusedFieldIdx}.value`, pastedOptions[i]);
-              focusedFieldIdx += 1;
             } else {
-              insert(focusedFieldIdx, { value: pastedOptions[i] });
-              focusedFieldIdx += 1;
+              append({ value: pastedOptions[i] });
             }
           }
         }}
@@ -118,6 +120,8 @@ export default function CreateOption({
               </label>
               <div>
                 <input
+                  autoFocus
+                  onFocus={() => setFocusedFieldIdx(index)}
                   key={field.id} // important to include key with field's id
                   className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   {...register(`option.${index}.value`)}
