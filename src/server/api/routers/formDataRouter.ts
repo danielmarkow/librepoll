@@ -1,3 +1,5 @@
+import { randomBytes } from "crypto";
+
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
@@ -104,17 +106,23 @@ export const formDataRouter = createTRPCRouter({
           where: { formId: input.formId },
         });
 
+        const key =
+          input.formId.slice(0, 5).toString() +
+          "-" +
+          randomBytes(5).toString("hex") +
+          ".json";
+
         const response = await uploadFileToS3({
           region: "eu-central-1",
           bucket: "librepoll",
-          key: "test.json",
+          key,
           fileBody: JSON.stringify(fileBody),
         });
         if (response?.$metadata.httpStatusCode === 200) {
           const clientUrl = await createPresignedUrlWithClient({
             region: "eu-central-1",
             bucket: "librepoll",
-            key: "test.json",
+            key,
           });
 
           return { downloadLink: clientUrl };
