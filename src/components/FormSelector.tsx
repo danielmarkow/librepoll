@@ -56,6 +56,12 @@ export default function FormSelector() {
     }
   );
 
+  const createDownloadLinkMut = api.formData.createDownloadLink.useMutation({
+    onSuccess: (data) => {
+      console.log(data.downloadLink);
+    },
+  });
+
   const updateFormVisibilityMutation =
     api.form.updateFormVisibility.useMutation({
       onSuccess: () => {
@@ -173,7 +179,8 @@ export default function FormSelector() {
                 <ArrowDownTrayIcon
                   className="mt-1 mr-1 h-5 w-5 cursor-pointer"
                   onClick={() => {
-                    setFormIdToFetch(f.id);
+                    // setFormIdToFetch(f.id);
+                    createDownloadLinkMut.mutate({ formId: f.id });
                   }}
                 />
               </div>
