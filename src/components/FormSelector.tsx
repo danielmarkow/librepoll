@@ -70,12 +70,16 @@ export default function FormSelector() {
               <div className="flex items-start">
                 <div className="ml-3 flex-1">
                   <p className="text-sm font-medium text-gray-900">
-                    <a
-                      href={`${data.downloadLink}`}
-                      onClick={() => toast.dismiss(t.id)}
-                    >
-                      Download
-                    </a>
+                    {data.downloadLink === "" ? (
+                      <span>wait a minute ...</span>
+                    ) : (
+                      <a
+                        href={`${data.downloadLink}`}
+                        onClick={() => toast.dismiss(t.id)}
+                      >
+                        Download
+                      </a>
+                    )}
                   </p>
                 </div>
               </div>

@@ -100,12 +100,28 @@ export const formDataRouter = createTRPCRouter({
       const userForm = await ctx.prisma.form.findFirst({
         where: { id: input.formId, userId },
       });
-      // TODO select only latest version
+
+      // check if sufficient time has passed since
+      // the last request
+      const lastRun = await ctx.prisma.lastExtracted.findFirst({
+        where: {
+          formId: input.formId,
+        },
+      });
+
+      if (lastRun?.lastExtracted !== undefined) {
+        if (Date.now() - lastRun?.lastExtracted.getTime() < 300000) {
+          return { downloadLink: "" };
+        }
+      }
+
       if (userForm) {
+        // TODO select only latest version
         const fileBody = await ctx.prisma.publicFormData.findMany({
           where: { formId: input.formId },
         });
 
+        // construct unique file name
         const key =
           input.formId.slice(0, 5).toString() +
           "-" +
@@ -124,6 +140,23 @@ export const formDataRouter = createTRPCRouter({
             bucket: "librepoll",
             key,
           });
+
+          // write extraction timestamp to prevent misuse
+          if (lastRun?.lastExtracted === undefined) {
+            await ctx.prisma.lastExtracted.create({
+              data: {
+                formId: input.formId,
+                lastExtracted: new Date(),
+              },
+            });
+          } else {
+            await ctx.prisma.lastExtracted.update({
+              where: { formId: input.formId },
+              data: {
+                lastExtracted: new Date(),
+              },
+            });
+          }
 
           return { downloadLink: clientUrl };
         }
