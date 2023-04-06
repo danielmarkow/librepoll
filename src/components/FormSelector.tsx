@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -13,6 +15,8 @@ import { api } from "~/utils/api";
 import Button from "./common/Button";
 
 export default function FormSelector() {
+  const [hoverItem, setHoverItem] = useState<string>("");
+
   const router = useRouter();
   const client = api.useContext();
 
@@ -114,7 +118,12 @@ export default function FormSelector() {
 
   return (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <h1 className="text-xl font-semibold">form selector</h1>
+      <div className="flex items-center gap-2">
+        <h1 className="text-xl font-semibold">form selector</h1>
+        <p className="invisible text-sm text-gray-400 md:visible">
+          {hoverItem}
+        </p>
+      </div>
       <p className="mt-1 text-lg">not public</p>
       <div>
         {getAllPrivateFormsQuery.isSuccess &&
@@ -132,12 +141,16 @@ export default function FormSelector() {
               <div className="mr-2 md:mr-0">
                 <TrashIcon
                   className="h-5 w-5 cursor-pointer"
+                  onMouseEnter={() => setHoverItem("delete")}
+                  onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
                     void deleteFormMutation.mutate({ formId: f.id })
                   }
                 />
                 <EyeIcon
                   className="mt-1 mb-1 h-5 w-5 cursor-pointer"
+                  onMouseEnter={() => setHoverItem("change visibility")}
+                  onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
                     void updateFormVisibilityMutation.mutate({
                       formId: f.id,
@@ -185,6 +198,8 @@ export default function FormSelector() {
               <div className="mr-2 md:mr-0">
                 <EyeIcon
                   className="h-5 w-5 cursor-pointer"
+                  onMouseEnter={() => setHoverItem("change visibility")}
+                  onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
                     void updateFormVisibilityMutation.mutate({
                       formId: f.id,
@@ -194,6 +209,8 @@ export default function FormSelector() {
                 />
                 <ShareIcon
                   className="mt-1 mr-1 h-5 w-5 cursor-pointer"
+                  onMouseEnter={() => setHoverItem("share form")}
+                  onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
                     void navigator.clipboard
                       .writeText(`${window.location.href}public/forms/${f.id}`)
@@ -203,6 +220,8 @@ export default function FormSelector() {
                 />
                 <ArrowDownTrayIcon
                   className="mt-1 mr-1 h-5 w-5 cursor-pointer"
+                  onMouseEnter={() => setHoverItem("download results")}
+                  onMouseLeave={() => setHoverItem("")}
                   onClick={() => {
                     // setFormIdToFetch(f.id);
                     createDownloadLinkMut.mutate({ formId: f.id });
