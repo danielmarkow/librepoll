@@ -70,27 +70,6 @@ export const formDataRouter = createTRPCRouter({
 
       return { id: createdForm.id };
     }),
-  getFormData: protectedProcedure
-    .input(z.object({ formId: z.string().cuid() }))
-    .query(async ({ ctx, input }) => {
-      const userId = ctx.session?.user?.id;
-
-      // check if it is the users form first
-      const userForm = await ctx.prisma.form.findFirst({
-        where: { id: input.formId, userId },
-      });
-      // TODO select only latest version
-      if (userForm) {
-        return ctx.prisma.publicFormData.findMany({
-          where: { formId: input.formId },
-        });
-      }
-
-      throw new TRPCError({
-        code: "FORBIDDEN",
-        message: "you are not authorized to access",
-      });
-    }),
   createDownloadLink: protectedProcedure
     .input(z.object({ formId: z.string().cuid() }))
     .mutation(async ({ ctx, input }) => {
