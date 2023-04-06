@@ -34,6 +34,7 @@ export default function PreRenderField({ field }: { field: Field }) {
           fields: oldData?.fields.filter((field) => field.id !== data.id),
         } as FormData;
       });
+      setCurrentFieldId("");
     },
     onError: () => {
       toast.error("error deleting field");
