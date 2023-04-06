@@ -4,12 +4,13 @@ import { TRPCError } from "@trpc/server";
 
 export const formRouter = createTRPCRouter({
   createForm: protectedProcedure
-    .input(z.object({ name: z.string() }))
+    .input(z.object({ name: z.string(), description: z.string().optional() }))
     .mutation(async ({ ctx, input }) => {
       const userId = ctx.session?.user?.id;
       const createdForm = await ctx.prisma.form.create({
         data: {
           name: input.name,
+          description: input.description,
           user: {
             connect: {
               id: userId,

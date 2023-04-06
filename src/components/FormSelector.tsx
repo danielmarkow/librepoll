@@ -159,7 +159,10 @@ export default function FormSelector() {
         <div>
           <Button
             onClick={() =>
-              void createFormMutation.mutate({ name: "my new form" })
+              void createFormMutation.mutate({
+                name: "my new form",
+                description: "fill in all the fields",
+              })
             }
             className="ml-2 md:ml-0"
           >
