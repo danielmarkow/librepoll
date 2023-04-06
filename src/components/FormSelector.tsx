@@ -80,6 +80,9 @@ export default function FormSelector() {
         }
       );
     },
+    onError: () => {
+      toast.error("technical error generating the download link");
+    },
   });
 
   const updateFormVisibilityMutation =
