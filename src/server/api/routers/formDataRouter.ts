@@ -46,7 +46,10 @@ const uploadFileToS3 = async ({
   try {
     return await client.send(command);
   } catch (err) {
-    console.error(err);
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: err as string,
+    });
   }
 };
 

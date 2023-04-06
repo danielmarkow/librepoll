@@ -37,7 +37,6 @@ export default function FormSelector() {
 
   const createDownloadLinkMut = api.formData.createDownloadLink.useMutation({
     onSuccess: (data) => {
-      console.log(data.downloadLink);
       toast.custom(
         (t) => (
           <div
