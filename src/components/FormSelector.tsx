@@ -1,20 +1,18 @@
-import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+
 import {
   ArrowDownTrayIcon,
   EyeIcon,
   ShareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import csvDownload from "json-to-csv-export";
-import Link from "next/link";
 import { toast } from "react-hot-toast";
 
 import { api } from "~/utils/api";
 import Button from "./common/Button";
 
 export default function FormSelector() {
-  const [formIdToFetch, setFormIdToFetch] = useState<string>("");
   const router = useRouter();
   const client = api.useContext();
 
@@ -36,25 +34,56 @@ export default function FormSelector() {
       },
     }
   );
-  // eslint-disable-next-line
-  const getPublicFormDataQuery = api.formData.getFormData.useQuery(
-    { formId: formIdToFetch },
-    {
-      enabled: formIdToFetch !== "",
-      onSuccess: (data) => {
-        const dataToConvert = {
-          data: data.map((d) => JSON.parse(d.submission) as string),
-          filename: "public_form_result",
-          delimiter: ",",
-          // eslint-disable-next-line
-          headers: Object.keys(JSON.parse(data[0]?.submission!)),
-        };
-        csvDownload(dataToConvert);
-        setFormIdToFetch("");
-      },
-      staleTime: Infinity,
-    }
-  );
+
+  const createDownloadLinkMut = api.formData.createDownloadLink.useMutation({
+    onSuccess: (data) => {
+      console.log(data.downloadLink);
+      toast.custom(
+        (t) => (
+          <div
+            className={`${
+              t.visible ? "animate-enter" : "animate-leave"
+            } pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5`}
+          >
+            <div className="w-0 flex-1 p-4">
+              <div className="flex items-start">
+                <div className="ml-3 flex-1">
+                  {data.downloadLink === "" ? (
+                    <p className="text-sm font-medium text-gray-400">
+                      wait a minute ...
+                    </p>
+                  ) : (
+                    <p className="text-sm font-medium text-gray-900">
+                      <a
+                        href={`${data.downloadLink}`}
+                        onClick={() => toast.dismiss(t.id)}
+                      >
+                        Download
+                      </a>
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div className="flex border-l border-gray-200">
+              <button
+                onClick={() => toast.dismiss(t.id)}
+                className="flex w-full items-center justify-center rounded-none rounded-r-lg border border-transparent p-4 text-sm font-medium text-gray-600 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        ),
+        {
+          duration: Infinity,
+        }
+      );
+    },
+    onError: () => {
+      toast.error("technical error generating the download link");
+    },
+  });
 
   const updateFormVisibilityMutation =
     api.form.updateFormVisibility.useMutation({
@@ -173,7 +202,8 @@ export default function FormSelector() {
                 <ArrowDownTrayIcon
                   className="mt-1 mr-1 h-5 w-5 cursor-pointer"
                   onClick={() => {
-                    setFormIdToFetch(f.id);
+                    // setFormIdToFetch(f.id);
+                    createDownloadLinkMut.mutate({ formId: f.id });
                   }}
                 />
               </div>
