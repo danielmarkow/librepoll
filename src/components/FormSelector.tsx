@@ -138,9 +138,9 @@ export default function FormSelector() {
                   {f.name}
                 </Link>
               </div>
-              <div className="mr-2 md:mr-0">
+              <div className="mr-2 ml-1 md:mr-0 md:ml-0">
                 <TrashIcon
-                  className="h-5 w-5 cursor-pointer"
+                  className="h-7 w-7 cursor-pointer md:h-5 md:w-5"
                   onMouseEnter={() => setHoverItem("delete")}
                   onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
@@ -148,7 +148,7 @@ export default function FormSelector() {
                   }
                 />
                 <EyeIcon
-                  className="mt-1 mb-1 h-5 w-5 cursor-pointer"
+                  className="mt-1 mb-1 h-7 w-7 cursor-pointer md:h-5 md:w-5"
                   onMouseEnter={() => setHoverItem("change visibility")}
                   onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
@@ -195,9 +195,9 @@ export default function FormSelector() {
                   {f.name}
                 </Link>
               </div>
-              <div className="mr-2 md:mr-0">
+              <div className="mr-2 ml-1 md:mr-0 md:ml-0">
                 <EyeIcon
-                  className="h-5 w-5 cursor-pointer"
+                  className="h-7 w-7 cursor-pointer md:h-5 md:w-5"
                   onMouseEnter={() => setHoverItem("change visibility")}
                   onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
@@ -208,7 +208,7 @@ export default function FormSelector() {
                   }
                 />
                 <ShareIcon
-                  className="mt-1 mr-1 h-5 w-5 cursor-pointer"
+                  className="mt-1 mr-1 h-7 w-7 cursor-pointer md:h-5 md:w-5"
                   onMouseEnter={() => setHoverItem("share form")}
                   onMouseLeave={() => setHoverItem("")}
                   onClick={() =>
@@ -219,7 +219,7 @@ export default function FormSelector() {
                   }
                 />
                 <ArrowDownTrayIcon
-                  className="mt-1 mr-1 h-5 w-5 cursor-pointer"
+                  className="mt-1 mr-1 h-7 w-7 cursor-pointer md:h-5 md:w-5"
                   onMouseEnter={() => setHoverItem("download results")}
                   onMouseLeave={() => setHoverItem("")}
                   onClick={() => {
