@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 
 const formSchema = z.object({
   formName: z.string().min(5),
-  formDescription: z.string().max(191).optional(),
+  formDescription: z.string().optional(),
 });
 
 export default function EditForm() {

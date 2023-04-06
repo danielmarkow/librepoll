@@ -19,7 +19,7 @@ datasource db {
 model Form {
     id             String           @id @default(cuid())
     name           String
-    description    String?
+    description    String?          @db.Text
     createdAt      DateTime         @default(now())
     updatedAt      DateTime         @updatedAt
     fields         Field[]
