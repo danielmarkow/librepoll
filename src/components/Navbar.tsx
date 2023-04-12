@@ -114,13 +114,26 @@ export default function Navbar() {
                           <div>
                             <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                               <span className="sr-only">Open user menu</span>
-                              <Image
-                                className="h-8 w-8 rounded-full"
-                                src={sessionData?.user.image as string}
-                                alt="user image"
-                                height={8}
-                                width={8}
-                              />
+                              {sessionData.user.image !== undefined &&
+                              sessionData.user.image !== null ? (
+                                <Image
+                                  className="h-8 w-8 rounded-full"
+                                  src={sessionData?.user.image}
+                                  alt="user image"
+                                  height={8}
+                                  width={8}
+                                />
+                              ) : (
+                                <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
+                                  <svg
+                                    className="h-full w-full text-gray-300"
+                                    fill="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                  </svg>
+                                </span>
+                              )}
                             </Menu.Button>
                           </div>
                           <Transition
@@ -202,13 +215,26 @@ export default function Navbar() {
                 <div className="border-t border-gray-200 pb-3 pt-4">
                   <div className="flex items-center px-4 sm:px-6">
                     <div className="flex-shrink-0">
-                      <Image
-                        className="h-10 w-10 rounded-full"
-                        src={sessionData?.user.image as string}
-                        alt=""
-                        height={10}
-                        width={10}
-                      />
+                      {sessionData.user.image !== undefined &&
+                      sessionData.user.image !== null ? (
+                        <Image
+                          className="h-10 w-10 rounded-full"
+                          src={sessionData?.user.image}
+                          alt=""
+                          height={10}
+                          width={10}
+                        />
+                      ) : (
+                        <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
+                          <svg
+                            className="h-full w-full text-gray-300"
+                            fill="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                          </svg>
+                        </span>
+                      )}
                     </div>
                     <div className="ml-3">
                       <div className="text-base font-medium text-gray-800">
