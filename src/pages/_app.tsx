@@ -8,6 +8,8 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { Toaster } from "react-hot-toast";
 
+import Navbar from "~/components/Navbar";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -23,7 +25,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <Navbar />
+        <div className="mx-auto mt-3 max-w-7xl sm:px-6 lg:px-8">
           <Toaster />
           <Component {...pageProps} />
         </div>

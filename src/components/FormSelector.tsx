@@ -119,7 +119,6 @@ export default function FormSelector() {
   return (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div className="flex items-center gap-2">
-        <h1 className="text-xl font-semibold">form selector</h1>
         <p className="invisible text-sm text-gray-400 md:visible">
           {hoverItem}
         </p>
@@ -173,7 +172,7 @@ export default function FormSelector() {
           <Button
             onClick={() =>
               void createFormMutation.mutate({
-                name: "my new form",
+                name: "my new poll",
                 description: "fill in all the fields",
               })
             }
