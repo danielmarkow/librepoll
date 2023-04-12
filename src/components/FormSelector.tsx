@@ -95,7 +95,6 @@ export default function FormSelector() {
     onSuccess: (data) => {
       void router.push({
         pathname: `/forms/${data.id}`,
-        // query: { fromCreate: true },
       });
     },
   });
@@ -140,6 +139,19 @@ export default function FormSelector() {
               </div>
             </>
           ))}
+        {getAllPublicFormsQuery.isSuccess &&
+          getAllPublicFormsQuery.data.length === 0 && (
+            <>
+              <div className="relative flex items-center space-x-3 rounded-lg border border-dotted border-gray-300 bg-white px-6 py-5 shadow-sm">
+                <div className="min-w-0 flex-1">
+                  <span aria-hidden="true" />
+                  <p className="truncate text-sm text-gray-500">
+                    no public forms yet
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
       </div>
       <DividerWithTitle>not public</DividerWithTitle>
       {/* <p className="mt-1 mb-1 text-lg">not public</p> */}
