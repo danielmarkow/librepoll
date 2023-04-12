@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import {
   ArrowDownTrayIcon,
+  EllipsisHorizontalIcon,
   EyeIcon,
   ShareIcon,
   TrashIcon,
@@ -13,10 +14,9 @@ import { toast } from "react-hot-toast";
 
 import { api } from "~/utils/api";
 import Button from "./common/Button";
+import FormDropDown from "./FormDropDown";
 
 export default function FormSelector() {
-  const [hoverItem, setHoverItem] = useState<string>("");
-
   const router = useRouter();
   const client = api.useContext();
 
@@ -88,15 +88,15 @@ export default function FormSelector() {
     },
   });
 
-  const updateFormVisibilityMutation =
-    api.form.updateFormVisibility.useMutation({
-      onSuccess: () => {
-        void client.form.getAllForms.invalidate();
-      },
-      onError: () => {
-        toast.error("technical error setting form public");
-      },
-    });
+  // const updateFormVisibilityMutation =
+  //   api.form.updateFormVisibility.useMutation({
+  //     onSuccess: () => {
+  //       void client.form.getAllForms.invalidate();
+  //     },
+  //     onError: () => {
+  //       toast.error("technical error setting form public");
+  //     },
+  //   });
 
   const createFormMutation = api.form.createForm.useMutation({
     onSuccess: (data) => {
@@ -107,24 +107,44 @@ export default function FormSelector() {
     },
   });
 
-  const deleteFormMutation = api.form.deleteForm.useMutation({
-    onSuccess: () => {
-      void client.form.getAllForms.invalidate();
-    },
-    onError: () => {
-      toast.error("technical error deleting the form");
-    },
-  });
+  // const deleteFormMutation = api.form.deleteForm.useMutation({
+  //   onSuccess: () => {
+  //     void client.form.getAllForms.invalidate();
+  //   },
+  //   onError: () => {
+  //     toast.error("technical error deleting the form");
+  //   },
+  // });
 
   return (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-      <div className="flex items-center gap-2">
-        <p className="invisible text-sm text-gray-400 md:visible">
-          {hoverItem}
-        </p>
+      <p className="mt-1 mb-1 text-lg">not public</p>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {getAllPrivateFormsQuery.isSuccess &&
+          getAllPrivateFormsQuery.data.length > 0 &&
+          getAllPrivateFormsQuery.data.map((f) => (
+            <>
+              <div
+                key={f.id}
+                className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-offset-2 hover:border-gray-400"
+              >
+                <div className="min-w-0 flex-1">
+                  <Link href={`/forms/${f.id}`} className="focus:outline-none">
+                    <span /*className="absolute inset-0"*/ aria-hidden="true" />
+                    <p className="text-sm font-medium text-gray-900">
+                      {f.name}
+                    </p>
+                    <p className="truncate text-sm text-gray-500">
+                      {f.description}
+                    </p>
+                  </Link>
+                </div>
+                <FormDropDown id={f.id} />
+              </div>
+            </>
+          ))}
       </div>
-      <p className="mt-1 text-lg">not public</p>
-      <div>
+      {/* <div>
         {getAllPrivateFormsQuery.isSuccess &&
           getAllPrivateFormsQuery.data.length > 0 &&
           getAllPrivateFormsQuery.data.map((f) => (
@@ -237,7 +257,7 @@ export default function FormSelector() {
               </span>
             </div>
           )}
-      </div>
+      </div> */}
     </div>
   );
 }
