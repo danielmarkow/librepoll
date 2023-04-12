@@ -14,7 +14,7 @@ const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
 };
 
-export default function DropDown({ id }: { id: string }) {
+export default function FormDropDownPrivate({ id }: { id: string }) {
   const client = api.useContext();
 
   // mutations
@@ -61,7 +61,12 @@ export default function DropDown({ id }: { id: string }) {
             <Menu.Item>
               {({ active }) => (
                 <span
-                  onClick={() => void deleteFormMutation.mutate({ formId: id })}
+                  onClick={() =>
+                    void updateFormVisibilityMutation.mutate({
+                      public: true,
+                      formId: id,
+                    })
+                  }
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block cursor-pointer px-4 py-2 text-sm"
@@ -79,12 +84,7 @@ export default function DropDown({ id }: { id: string }) {
             <Menu.Item>
               {({ active }) => (
                 <span
-                  onClick={() =>
-                    void updateFormVisibilityMutation.mutate({
-                      public: true,
-                      formId: id,
-                    })
-                  }
+                  onClick={() => void deleteFormMutation.mutate({ formId: id })}
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block cursor-pointer px-4 py-2 text-sm"
