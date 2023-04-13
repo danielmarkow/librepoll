@@ -4,6 +4,7 @@ import type {
   UseFormRegister,
   UseFormWatch,
 } from "react-hook-form";
+
 import Button from "./Button";
 
 type FormValues = {
@@ -32,12 +33,12 @@ export default function CreateFieldForm({
           htmlFor="fieldType"
           className="mt-1 block text-sm font-medium leading-6 text-gray-900"
         >
-          select type
+          Select field type
         </label>
         <div>
           <select
             id="fieldType"
-            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
             {...register("fieldType")}
           >
             <option value="text">text</option>
@@ -50,16 +51,17 @@ export default function CreateFieldForm({
           htmlFor="fieldName"
           className="mt-1 block text-sm font-medium leading-6 text-gray-900"
         >
-          name
+          Name
         </label>
         <p className="mt-0 text-sm text-gray-500">
-          this will be the column name in the results. should be unique
+          This will be the column name in the results. Should be unique in this
+          poll.
         </p>
         <div>
           <input
             type="text"
             id="fieldName"
-            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
             {...register("fieldName")}
           />
         </div>
@@ -68,16 +70,16 @@ export default function CreateFieldForm({
           htmlFor="fieldLabel"
           className="mt-1 block text-sm font-medium leading-6 text-gray-900"
         >
-          label
+          Label
         </label>
         <p className="mt-0 text-sm text-gray-500">
-          this will be displayed in the form
+          This will be displayed in the form
         </p>
         <div>
           <input
             type="text"
             id="fieldName"
-            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+            className="block w-full rounded-md border-0 px-1 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-600 sm:text-sm sm:leading-6"
             {...register("fieldLabel")}
           />
         </div>
@@ -87,12 +89,12 @@ export default function CreateFieldForm({
               htmlFor="fieldRequired"
               className="mt-1 block text-sm font-medium leading-6 text-gray-900"
             >
-              field required?
+              Field required?
             </label>
             <div>
               <select
                 id="fieldRequired"
-                className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-gray-600 sm:text-sm sm:leading-6"
                 {...register("fieldRequired")}
               >
                 <option value="no">no</option>
@@ -102,7 +104,9 @@ export default function CreateFieldForm({
           </>
         )}
 
-        <Button type="submit">save field</Button>
+        <Button className="mt-5" large={true} type="submit">
+          Save field
+        </Button>
       </form>
     </>
   );

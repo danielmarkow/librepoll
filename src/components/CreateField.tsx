@@ -77,7 +77,7 @@ export default function CreateField() {
 
   return (
     <>
-      <p className="mt-1 text-lg">create new field</p>
+      <p className="mt-1 text-lg">Create new field</p>
       <CreateFieldForm
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}

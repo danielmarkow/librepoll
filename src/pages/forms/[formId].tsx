@@ -45,11 +45,11 @@ export default function FormEdit() {
         checkIfPublic.isSuccess &&
         checkIfPublic.data?.public === false && (
           <>
-            <div className="mt-1 grid grid-cols-2 gap-1">
-              <div className="h-screen border-2 border-dashed border-gray-300 p-1">
+            <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
+              <div className="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm">
                 <CreateForm />
               </div>
-              <div className="h-screen border-2 border-dashed border-gray-300 p-1">
+              <div className="relative rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm">
                 <PreRenderForm />
               </div>
             </div>

@@ -23,7 +23,7 @@ export default function PreRenderForm() {
     return (
       <>
         {/* {JSON.stringify(data)} */}
-        <p className="mt-1 text-lg">form preview</p>
+        <p className="mt-1 text-lg">Poll Preview</p>
         {isSuccess && (
           <>
             <div className="flex gap-2">

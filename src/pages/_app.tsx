@@ -23,7 +23,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             name="just polls, no tracking"
             content="poll people without tracking them"
           />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/librepoll-icon.png" />
         </Head>
         <Navbar />
         <div className="mx-auto mt-3 max-w-7xl sm:px-6 lg:px-8">

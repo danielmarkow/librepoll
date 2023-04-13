@@ -108,7 +108,9 @@ export default function PublicForm() {
                   errors={errors}
                 />
               ))}
-              <Button type="submit">Submit</Button>
+              <Button className="mt-3" large={true} type="submit">
+                Submit
+              </Button>
             </form>
             <Link href="/">
               <p className="mt-5 text-sm text-gray-300">powered by librepoll</p>

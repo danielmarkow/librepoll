@@ -56,7 +56,7 @@ export default function CreateForm() {
     <>
       {currentFormId === "" && (
         <>
-          <p className="mt-1 text-lg">create new form</p>
+          <p className="mt-1 text-lg">Create new poll</p>
           <CreateFormForm
             handleSubmit={handleSubmit}
             onSubmit={onSubmit}
