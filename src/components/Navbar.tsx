@@ -120,8 +120,8 @@ export default function Navbar() {
                                   className="h-8 w-8 rounded-full"
                                   src={sessionData?.user.image}
                                   alt="user image"
-                                  height={8}
-                                  width={8}
+                                  height={32}
+                                  width={32}
                                 />
                               ) : (
                                 <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
@@ -221,8 +221,8 @@ export default function Navbar() {
                           className="h-10 w-10 rounded-full"
                           src={sessionData?.user.image}
                           alt=""
-                          height={10}
-                          width={10}
+                          height={40}
+                          width={40}
                         />
                       ) : (
                         <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
