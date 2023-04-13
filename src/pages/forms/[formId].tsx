@@ -1,4 +1,3 @@
-import { HomeIcon } from "@heroicons/react/24/outline";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -17,6 +16,10 @@ export default function FormEdit() {
 
   const { currentFormId, setCurrentFormId, setCurrentFieldId } = formHook();
 
+  useEffect(() => {
+    setCurrentFieldId("");
+  }, [setCurrentFieldId]);
+
   const checkIfPublic = api.form.checkIfPublic.useQuery(
     { formId: formId as string },
     {
@@ -31,16 +34,6 @@ export default function FormEdit() {
 
   return (
     <>
-      <Button
-        onClick={() => {
-          // so that the previously edited field doesn't remain open
-          setCurrentFieldId("");
-          void router.push("/");
-        }}
-      >
-        <HomeIcon className="h-5 w-5" />
-      </Button>
-
       {sessionData &&
         checkIfPublic.isSuccess &&
         checkIfPublic.data?.public === false && (

@@ -19,10 +19,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <FormProvider>
         <Head>
           <title>LibrePoll</title>
-          <meta
-            name="just polls, no tracking"
-            content="poll people without tracking them"
-          />
+          <meta name="simple polls" content="poll people easily and savely" />
           <link rel="icon" href="/librepoll-icon.png" />
         </Head>
         <Navbar />
