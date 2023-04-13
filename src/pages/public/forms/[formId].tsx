@@ -96,7 +96,7 @@ export default function PublicForm() {
     return (
       <>
         {publicFormQuery.isSuccess && (
-          <div className="ml-5 space-y-8 md:ml-0">
+          <div className="space-y-8">
             <div>
               <h1 className="text-xl">{publicFormQuery.data.name}</h1>
               <p className="text-gray-500">
@@ -107,12 +107,14 @@ export default function PublicForm() {
               {/* eslint-disable-next-line */}
               <form onSubmit={handleSubmit(onSubmit)}>
                 {publicFormQuery.data.fields.map((f) => (
-                  <RenderField
-                    key={f.id}
-                    field={f}
-                    register={register}
-                    errors={errors}
-                  />
+                  <div key={f.id}>
+                    <RenderField
+                      field={f}
+                      register={register}
+                      errors={errors}
+                    />
+                    <div className="border-b border-gray-900/10 pb-3"></div>
+                  </div>
                 ))}
                 <Button className="mt-3" large={true} type="submit">
                   Submit
