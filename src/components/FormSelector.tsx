@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Link from "next/link";
 
 import { toast } from "react-hot-toast";
@@ -6,8 +8,12 @@ import { api } from "~/utils/api";
 import FormDropDownPrivate from "./FormDropDownPrivate";
 import FormDropDownPublic from "./FormDropDownPublic";
 import DividerWithTitle from "./common/DividerWithTitle";
+import FormDeletionModal from "./FormDeletionModal";
 
 export default function FormSelector() {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalFormId, setModalFormId] = useState<string>("");
+
   const getAllPrivateFormsQuery = api.form.getAllForms.useQuery(
     {},
     {
@@ -29,6 +35,12 @@ export default function FormSelector() {
 
   return (
     <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <FormDeletionModal
+        open={modalOpen}
+        formId={modalFormId}
+        setOpen={setModalOpen}
+        setModalFormId={setModalFormId}
+      />
       <DividerWithTitle>public</DividerWithTitle>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {getAllPublicFormsQuery.isSuccess &&
@@ -92,7 +104,11 @@ export default function FormSelector() {
                     </p>
                   </Link>
                 </div>
-                <FormDropDownPrivate id={f.id} />
+                <FormDropDownPrivate
+                  id={f.id}
+                  setModalOpen={setModalOpen}
+                  setModalFormId={setModalFormId}
+                />
               </div>
             </>
           ))}
