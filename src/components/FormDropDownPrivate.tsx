@@ -1,10 +1,13 @@
 import { Fragment } from "react";
 import type { Dispatch, SetStateAction } from "react";
 
+import { useRouter } from "next/router";
+
 import { Menu, Transition } from "@headlessui/react";
 import {
   EllipsisVerticalIcon,
   EyeIcon,
+  PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/20/solid";
 
@@ -26,7 +29,7 @@ export default function FormDropDownPrivate({
   setModalFormId: Dispatch<SetStateAction<string>>;
 }) {
   const client = api.useContext();
-
+  const router = useRouter();
   // mutations
   const updateFormVisibilityMutation =
     api.form.updateFormVisibility.useMutation({
@@ -78,6 +81,24 @@ export default function FormDropDownPrivate({
                       <EyeIcon className="h-5 w-5" />{" "}
                     </div>
                     <div className="ml-1">Publish</div>
+                  </div>
+                </span>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <span
+                  onClick={() => void router.push(`/forms/${id}`)}
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block cursor-pointer px-4 py-2 text-sm"
+                  )}
+                >
+                  <div className="flex justify-start">
+                    <div>
+                      <PencilSquareIcon className="h-5 w-5" />{" "}
+                    </div>
+                    <div className="ml-1">Edit</div>
                   </div>
                 </span>
               )}
