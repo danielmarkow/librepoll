@@ -4,6 +4,7 @@ import {
   EllipsisVerticalIcon,
   EyeIcon,
   ArrowDownTrayIcon,
+  ShareIcon,
 } from "@heroicons/react/20/solid";
 
 import { toast } from "react-hot-toast";
@@ -139,6 +140,29 @@ export default function FormDropDownPublic({ id }: { id: string }) {
                       <ArrowDownTrayIcon className="h-5 w-5" />{" "}
                     </div>
                     <div className="ml-1">Download</div>
+                  </div>
+                </span>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <span
+                  onClick={() =>
+                    void navigator.clipboard
+                      .writeText(`${window.location.href}public/forms/${id}`)
+                      .then(() => toast.success("form url copied to clipboard"))
+                      .catch(() => toast.error("error copying to clipboard"))
+                  }
+                  className={classNames(
+                    active ? "bg-gray-100 text-gray-900" : "text-gray-700",
+                    "block cursor-pointer px-4 py-2 text-sm"
+                  )}
+                >
+                  <div className="flex justify-start">
+                    <div>
+                      <ShareIcon className="h-5 w-5" />{" "}
+                    </div>
+                    <div className="ml-1">Share</div>
                   </div>
                 </span>
               )}
