@@ -54,6 +54,7 @@ export default function PublicForm() {
     {
       enabled: formId !== undefined,
       staleTime: Infinity,
+      refetchOnMount: "always",
       onSuccess: (data) => {
         data?.fields.forEach((f) =>
           Object.assign(schemaObj, {
@@ -95,23 +96,29 @@ export default function PublicForm() {
     return (
       <>
         {publicFormQuery.isSuccess && (
-          <div className="ml-5 md:ml-0">
-            <h1 className="text-xl">{publicFormQuery.data.name}</h1>
-            <p className="text-gray-500">{publicFormQuery.data.description}</p>
-            {/* eslint-disable-next-line */}
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {publicFormQuery.data.fields.map((f) => (
-                <RenderField
-                  key={f.id}
-                  field={f}
-                  register={register}
-                  errors={errors}
-                />
-              ))}
-              <Button className="mt-3" large={true} type="submit">
-                Submit
-              </Button>
-            </form>
+          <div className="ml-5 space-y-8 md:ml-0">
+            <div>
+              <h1 className="text-xl">{publicFormQuery.data.name}</h1>
+              <p className="text-gray-500">
+                {publicFormQuery.data.description}
+              </p>
+            </div>
+            <div className="rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm">
+              {/* eslint-disable-next-line */}
+              <form onSubmit={handleSubmit(onSubmit)}>
+                {publicFormQuery.data.fields.map((f) => (
+                  <RenderField
+                    key={f.id}
+                    field={f}
+                    register={register}
+                    errors={errors}
+                  />
+                ))}
+                <Button className="mt-3" large={true} type="submit">
+                  Submit
+                </Button>
+              </form>
+            </div>
             <Link href="/">
               <p className="mt-5 text-sm text-gray-300">powered by librepoll</p>
             </Link>

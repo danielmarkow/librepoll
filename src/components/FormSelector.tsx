@@ -46,28 +46,24 @@ export default function FormSelector() {
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length > 0 &&
           getAllPublicFormsQuery.data.map((f) => (
-            <>
-              <div
-                key={f.id}
-                className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-offset-2 hover:border-gray-400"
-              >
-                <div className="min-w-0 flex-1">
-                  <Link
-                    href={`/public/forms/${f.id}`}
-                    className="focus:outline-none"
-                  >
-                    <span aria-hidden="true" />
-                    <p className="text-sm font-medium text-gray-900">
-                      {f.name}
-                    </p>
-                    <p className="truncate text-sm text-gray-500">
-                      {f.description}
-                    </p>
-                  </Link>
-                </div>
-                <FormDropDownPublic id={f.id} />
+            <div
+              key={f.id}
+              className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-offset-2 hover:border-gray-400"
+            >
+              <div className="min-w-0 flex-1">
+                <Link
+                  href={`/public/forms/${f.id}`}
+                  className="focus:outline-none"
+                >
+                  <span aria-hidden="true" />
+                  <p className="text-sm font-medium text-gray-900">{f.name}</p>
+                  <p className="truncate text-sm text-gray-500">
+                    {f.description}
+                  </p>
+                </Link>
               </div>
-            </>
+              <FormDropDownPublic id={f.id} />
+            </div>
           ))}
         {getAllPublicFormsQuery.isSuccess &&
           getAllPublicFormsQuery.data.length === 0 && (
@@ -88,29 +84,25 @@ export default function FormSelector() {
         {getAllPrivateFormsQuery.isSuccess &&
           getAllPrivateFormsQuery.data.length > 0 &&
           getAllPrivateFormsQuery.data.map((f) => (
-            <>
-              <div
-                key={f.id}
-                className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-offset-2 hover:border-gray-400"
-              >
-                <div className="min-w-0 flex-1">
-                  <Link href={`/forms/${f.id}`} className="focus:outline-none">
-                    <span aria-hidden="true" />
-                    <p className="text-sm font-medium text-gray-900">
-                      {f.name}
-                    </p>
-                    <p className="truncate text-sm text-gray-500">
-                      {f.description}
-                    </p>
-                  </Link>
-                </div>
-                <FormDropDownPrivate
-                  id={f.id}
-                  setModalOpen={setModalOpen}
-                  setModalFormId={setModalFormId}
-                />
+            <div
+              key={f.id}
+              className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-gray-500 focus-within:ring-offset-2 hover:border-gray-400"
+            >
+              <div className="min-w-0 flex-1">
+                <Link href={`/forms/${f.id}`} className="focus:outline-none">
+                  <span aria-hidden="true" />
+                  <p className="text-sm font-medium text-gray-900">{f.name}</p>
+                  <p className="truncate text-sm text-gray-500">
+                    {f.description}
+                  </p>
+                </Link>
               </div>
-            </>
+              <FormDropDownPrivate
+                id={f.id}
+                setModalOpen={setModalOpen}
+                setModalFormId={setModalFormId}
+              />
+            </div>
           ))}
         {getAllPrivateFormsQuery.isSuccess &&
           getAllPrivateFormsQuery.data.length === 0 && (

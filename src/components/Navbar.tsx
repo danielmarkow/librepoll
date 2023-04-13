@@ -122,6 +122,7 @@ export default function Navbar() {
                                   alt="user image"
                                   height={32}
                                   width={32}
+                                  priority
                                 />
                               ) : (
                                 <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
@@ -223,6 +224,7 @@ export default function Navbar() {
                           alt=""
                           height={40}
                           width={40}
+                          priority
                         />
                       ) : (
                         <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
