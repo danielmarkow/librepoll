@@ -1,4 +1,6 @@
 import { Fragment } from "react";
+import type { Dispatch, SetStateAction } from "react";
+
 import { Menu, Transition } from "@headlessui/react";
 import {
   EllipsisVerticalIcon,
@@ -14,19 +16,18 @@ const classNames = (...classes: string[]) => {
   return classes.filter(Boolean).join(" ");
 };
 
-export default function FormDropDownPrivate({ id }: { id: string }) {
+export default function FormDropDownPrivate({
+  id,
+  setModalOpen,
+  setModalFormId,
+}: {
+  id: string;
+  setModalOpen: Dispatch<SetStateAction<boolean>>;
+  setModalFormId: Dispatch<SetStateAction<string>>;
+}) {
   const client = api.useContext();
 
   // mutations
-  const deleteFormMutation = api.form.deleteForm.useMutation({
-    onSuccess: () => {
-      void client.form.getAllForms.invalidate();
-    },
-    onError: () => {
-      toast.error("technical error deleting the form");
-    },
-  });
-
   const updateFormVisibilityMutation =
     api.form.updateFormVisibility.useMutation({
       onSuccess: () => {
@@ -84,7 +85,10 @@ export default function FormDropDownPrivate({ id }: { id: string }) {
             <Menu.Item>
               {({ active }) => (
                 <span
-                  onClick={() => void deleteFormMutation.mutate({ formId: id })}
+                  onClick={() => {
+                    setModalOpen(true);
+                    setModalFormId(id);
+                  }}
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block cursor-pointer px-4 py-2 text-sm"
