@@ -64,7 +64,7 @@ export default function FormDeletionModal({
                 <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
                   <button
                     type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                     onClick={() => setOpen(false)}
                   >
                     <span className="sr-only">Close</span>
@@ -72,9 +72,9 @@ export default function FormDeletionModal({
                   </button>
                 </div>
                 <div className="sm:flex sm:items-start">
-                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                  <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-gray-100 sm:mx-0 sm:h-10 sm:w-10">
                     <ExclamationTriangleIcon
-                      className="h-6 w-6 text-red-600"
+                      className="h-6 w-6 text-gray-600"
                       aria-hidden="true"
                     />
                   </div>

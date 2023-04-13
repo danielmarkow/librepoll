@@ -28,7 +28,6 @@ export default function FormDropDownPrivate({
   const client = api.useContext();
 
   // mutations
-
   const updateFormVisibilityMutation =
     api.form.updateFormVisibility.useMutation({
       onSuccess: () => {
@@ -86,13 +85,10 @@ export default function FormDropDownPrivate({
             <Menu.Item>
               {({ active }) => (
                 <span
-                  onClick={
-                    // () => void deleteFormMutation.mutate({ formId: id })
-                    () => {
-                      setModalOpen(true);
-                      setModalFormId(id);
-                    }
-                  }
+                  onClick={() => {
+                    setModalOpen(true);
+                    setModalFormId(id);
+                  }}
                   className={classNames(
                     active ? "bg-gray-100 text-gray-900" : "text-gray-700",
                     "block cursor-pointer px-4 py-2 text-sm"
