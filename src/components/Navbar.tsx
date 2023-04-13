@@ -271,8 +271,8 @@ export default function Navbar() {
                     </Disclosure.Button> */}
                     <Disclosure.Button
                       as="a"
-                      href="#"
-                      className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
+                      onClick={() => void signOut()}
+                      className="block cursor-pointer px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                     >
                       Sign out
                     </Disclosure.Button>
