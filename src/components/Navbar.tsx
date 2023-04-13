@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { toast } from "react-hot-toast";
 
@@ -43,7 +43,7 @@ export default function Navbar() {
                   <div className="flex">
                     <div className="-ml-2 mr-2 flex items-center md:hidden">
                       {/* Mobile menu button */}
-                      <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                      <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-gray-500">
                         <span className="sr-only">Open main menu</span>
                         {open ? (
                           <XMarkIcon
@@ -112,7 +112,7 @@ export default function Navbar() {
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3">
                           <div>
-                            <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                               <span className="sr-only">Open user menu</span>
                               {sessionData.user.image !== undefined &&
                               sessionData.user.image !== null ? (
@@ -120,8 +120,8 @@ export default function Navbar() {
                                   className="h-8 w-8 rounded-full"
                                   src={sessionData?.user.image}
                                   alt="user image"
-                                  height={8}
-                                  width={8}
+                                  height={32}
+                                  width={32}
                                 />
                               ) : (
                                 <span className="inline-block h-8 w-8 overflow-hidden rounded-full bg-gray-100">
@@ -200,17 +200,17 @@ export default function Navbar() {
                   <Disclosure.Button
                     as="a"
                     href="/"
-                    className="block border-l-4 border-indigo-500 bg-indigo-50 py-2 pl-3 pr-4 text-base font-medium text-indigo-700 sm:pl-5 sm:pr-6"
+                    className="block border-l-4 border-gray-500 bg-gray-50 py-2 pl-3 pr-4 text-base font-medium text-gray-700 sm:pl-5 sm:pr-6"
                   >
                     My Polls
                   </Disclosure.Button>
-                  <Disclosure.Button
+                  {/* <Disclosure.Button
                     as="a"
                     href="#"
                     className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700 sm:pl-5 sm:pr-6"
                   >
                     Personalized Polls
-                  </Disclosure.Button>
+                  </Disclosure.Button> */}
                 </div>
                 <div className="border-t border-gray-200 pb-3 pt-4">
                   <div className="flex items-center px-4 sm:px-6">
@@ -221,8 +221,8 @@ export default function Navbar() {
                           className="h-10 w-10 rounded-full"
                           src={sessionData?.user.image}
                           alt=""
-                          height={10}
-                          width={10}
+                          height={40}
+                          width={40}
                         />
                       ) : (
                         <span className="inline-block h-10 w-10 overflow-hidden rounded-full bg-gray-100">
@@ -244,16 +244,16 @@ export default function Navbar() {
                         {sessionData?.user.email}
                       </div>
                     </div>
-                    <button
+                    {/* <button
                       type="button"
                       className="ml-auto flex-shrink-0 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                       <span className="sr-only">View notifications</span>
                       <BellIcon className="h-6 w-6" aria-hidden="true" />
-                    </button>
+                    </button> */}
                   </div>
                   <div className="mt-3 space-y-1">
-                    <Disclosure.Button
+                    {/* <Disclosure.Button
                       as="a"
                       href="#"
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
@@ -266,7 +266,7 @@ export default function Navbar() {
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800 sm:px-6"
                     >
                       Settings
-                    </Disclosure.Button>
+                    </Disclosure.Button> */}
                     <Disclosure.Button
                       as="a"
                       href="#"
